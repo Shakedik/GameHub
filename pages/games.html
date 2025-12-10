@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <title>GameHub - כל המשחקים</title>
+    <link rel="stylesheet" href="../css/games.css">
+</head>
+
+<body>
+
+<header class="main-header">
+    <div class="logo">GameHub</div>
+
+    <nav class="nav-menu">
+        <a href="#">משחקים מובילים</a>
+        <a href="#">משחקים אהובים</a>
+        <a href="#">משחקי מחשב</a>
+        <div class="categories-dropdown">
+    <button id="categoriesBtn">קטגוריות ▼</button>
+
+    <ul id="categoriesMenu" class="hidden">
+        <li>משחקי פעולה</li>
+        <li>משחקי מחשבה</li>
+        <li>משחקי מרוצים</li>
+        <li>משחקי ילדים</li>
+        <li>משחקי ספורט</li>
+        <li>משחקי הרפתקאות</li>
+    </ul>
+</div>
+    </nav>
+
+
+    <div class="icons">
+        <div class="icon search">🔍</div>
+        <div class="icon user">👤</div>
+    </div>
+</header>
+
+
+<h2 class="section-title">כל המשחקים</h2>
+
+<div class="games-grid">
+
+    <!-- משחק פעיל 1 -->
+    <div class="game-card active" onclick="openGame(1)">
+        <img src="../img/game1.jpg" alt="">
+        <p>משחק זיכרון</p>
+    </div>
+
+    <!-- משחק פעיל 2 -->
+    <div class="game-card active" onclick="openGame(2)">
+        <img src="../img/game2.jpg" alt="">
+        <p>תפוס את הכדור</p>
+    </div>
+
+    <!-- שאר המשחקים — בפיתוח -->
+    <div class="game-card disabled">
+        <img src="../img/placeholder.jpg" alt="">
+        <p>בפיתוח</p>
+    </div>
+
+    <div class="game-card disabled">
+        <img src="../img/placeholder.jpg" alt="">
+        <p>בפיתוח</p>
+    </div>
+
+    <div class="game-card disabled">
+        <img src="../img/placeholder.jpg" alt="">
+        <p>בפיתוח</p>
+    </div>
+
+    <div class="game-card disabled">
+        <img src="../img/placeholder.jpg" alt="">
+        <p>בפיתוח</p>
+    </div>
+
+    <div class="game-card disabled">
+        <img src="../img/placeholder.jpg" alt="">
+        <p>בפיתוח</p>
+    </div>
+
+    <div class="game-card disabled">
+        <img src="../img/placeholder.jpg" alt="">
+        <p>בפיתוח</p>
+    </div>
+
+    <div class="game-card disabled">
+        <img src="../img/placeholder.jpg" alt="">
+        <p>בפיתוח</p>
+    </div>
+
+    <div class="game-card disabled">
+        <img src="../img/placeholder.jpg" alt="">
+        <p>בפיתוח</p>
+    </div>
+
+</div>
+
+<script>
+function openGame(num) {
+    if (num === 1) window.location.href = "memory.html";
+    if (num === 2) window.location.href = "catch.html";
+}
+</script>
+<script>
+const btn = document.getElementById("categoriesBtn");
+const menu = document.getElementById("categoriesMenu");
+
+btn.addEventListener("click", () => {
+    menu.classList.toggle("hidden");
+});
+
+// סגירה בלחיצה מחוץ לתפריט
+document.addEventListener("click", (e) => {
+    if (!btn.contains(e.target) && !menu.contains(e.target)) {
+        menu.classList.add("hidden");
+    }
+});
+</script>
+
+</body>
+</html>

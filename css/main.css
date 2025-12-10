@@ -1,0 +1,158 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    direction: rtl;
+    background: linear-gradient(135deg, #ab49e8, #06b6d4);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* אייקונים מרחפים */
+.floating-icons span {
+    position: absolute;
+    font-size: 40px;
+    opacity: 0.35;
+    animation: float 10s infinite linear;
+}
+
+/* כל אימוג'י במקום אחר ובמהירות קצת שונה */
+.floating-icons span:nth-child(1) { left: 10%; animation-duration: 12s; }
+.floating-icons span:nth-child(2) { left: 40%; animation-duration: 15s; }
+.floating-icons span:nth-child(3) { left: 70%; animation-duration: 11s; }
+.floating-icons span:nth-child(4) { left: 85%; animation-duration: 14s; }
+
+/* עכשיו הם מופיעים ישר – לא טסים מלמטה */
+@keyframes float {
+    0% { transform: translateY(20vh) rotate(0deg); }
+    100% { transform: translateY(-80vh) rotate(360deg); }
+}
+
+/* מרכז העמוד */
+.hero-container {
+    text-align: center;
+    color: white;
+    animation: fadeIn 1.2s ease-in-out;
+}
+
+/* טקסט GameHub */
+.title {
+    font-size: 72px;
+    font-weight: 900;
+    margin-bottom: 10px;
+    position: relative;
+    display: inline-block;
+    overflow: hidden; /* הברק לא יוצא מגבולות הטקסט */
+}
+
+/* אפקט ה־GLOW שהיה קודם */
+.glow-text {
+    color: #fff;
+    text-shadow:
+        0 0 10px #ffffffcc,
+        0 0 20px #00eaff,
+        0 0 30px #00eaff,
+        0 0 40px #00c3ff;
+    animation: neonPulse 2s infinite alternate;
+}
+
+/* אפקט הברק — מעודכן */
+.shine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;        /* בדיוק רוחב האותיות */
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(
+        120deg,
+        transparent 0%,
+        transparent 45%,
+        #ffffff55 50%,
+        transparent 55%,
+        transparent 100%
+    );
+
+    animation: shineMove 2s ease-in-out;
+    animation-iteration-count: 1; /* פעם אחת בלבד */
+}
+
+/* הברק זז בדיוק מגבול לגבול */
+@keyframes shineMove {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* אפקט ה־Pulse של האותיות */
+@keyframes neonPulse {
+    0% { text-shadow: 0 0 15px #00eaff; }
+    100% { text-shadow: 0 0 30px #00eaff; }
+}
+
+.subtitle {
+    font-size: 22px;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+/* כפתורים */
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn {
+    padding: 14px 40px;
+    background: white;
+    color: #2563eb;
+    font-size: 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px #0003;
+}
+
+.btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 14px #0005;
+}
+
+.btn.outline {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+}
+
+.btn.outline:hover {
+    background: white;
+    color: #2563eb;
+}
+
+/* Fade-in */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* קונפטי */
+.confetti span {
+    position: absolute;
+    top: -50px;        /* מתחילים מעל המסך */
+    user-select: none;
+    pointer-events: none;
+    opacity: 0.7;
+    animation: fall linear infinite;
+}
+
+/* נפילה + סיבוב + תנועה שמאלה/ימינה */
+@keyframes fall {
+    0% {
+        transform: translateY(-100px) rotate(0deg);
+    }
+    100% {
+        transform: translateY(110vh) rotate(360deg);
+    }
+}
