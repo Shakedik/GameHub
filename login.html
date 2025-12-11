@@ -1,27 +1,34 @@
 <!DOCTYPE html>
 <html lang="he">
 <head>
-    
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>GameHub - התחברות</title>
-    <link rel="stylesheet" href="css/auth.css" />
+    <link rel="stylesheet" href="css/auth.css">
 </head>
-
 <body>
 
-<div class="auth-container">
+    <!-- כפתור חזרה -->
+    <a href="index.html" class="back-btn">⬅ חזרה</a>
 
-    <h1>התחברות</h1>
+    <div class="auth-container">
+        <img src="img/imagelogo.png" class="auth-logo">
 
-    <form id="loginForm">
-        <input type="text" id="loginUser" placeholder="שם משתמש" required />
-        <input type="password" id="loginPass" placeholder="סיסמה" required />
-        <button type="submit">כניסה</button>
-    </form>
+        <h1 class="auth-title">ברוכים השבים!</h1>
+        <p class="auth-subtitle">התחבר/י כדי להמשיך לשחק</p>
 
-    <a class="link" href="register.html">אין לך משתמש? להרשמה</a>
-</div>
+        <form id="loginForm" class="auth-form">
+            <input type="text" id="loginUser" placeholder="שם משתמש" required>
+            <input type="password" id="loginPass" placeholder="סיסמה" required>
 
-<script src="js/auth.js"></script>
+            <button type="submit" class="auth-btn">התחברות</button>
+        </form>
+
+        <p class="switch-text">
+            אין לך משתמש?
+            <a href="register.html">הרשמה</a>
+        </p>
+    </div>
+
+    <script src="js/auth.js"></script>
 </body>
 </html>

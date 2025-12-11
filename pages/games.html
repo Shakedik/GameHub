@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>GameHub - כל המשחקים</title>
     <link rel="stylesheet" href="../css/games.css">
+    <link rel="stylesheet" href="../css/profiles.css">
 </head>
 
 <body>
@@ -15,27 +16,25 @@
         <a href="#">משחקים מובילים</a>
         <a href="#">משחקים אהובים</a>
         <a href="#">משחקי מחשב</a>
-        <div class="categories-dropdown">
-    <button id="categoriesBtn">קטגוריות ▼</button>
 
-    <ul id="categoriesMenu" class="hidden">
-        <li>משחקי פעולה</li>
-        <li>משחקי מחשבה</li>
-        <li>משחקי מרוצים</li>
-        <li>משחקי ילדים</li>
-        <li>משחקי ספורט</li>
-        <li>משחקי הרפתקאות</li>
-    </ul>
-</div>
+        <div class="categories-dropdown">
+            <button id="categoriesBtn" class="cat-btn">קטגוריות ▼</button>
+
+            <ul id="categoriesMenu" class="cat-menu hidden">
+                <li>משחקי פעולה</li>
+                <li>משחקי מחשבה</li>
+                <li>משחקי מרוצים</li>
+                <li>משחקי ילדים</li>
+                <li>משחקי ספורט</li>
+                <li>משחקי הרפתקאות</li>
+            </ul>
+        </div>
     </nav>
 
-
     <div class="icons">
-        <div class="icon search">🔍</div>
-        <div class="icon user">👤</div>
+        <button id="profileBtn" class="icon-btn">👤</button>
     </div>
 </header>
-
 
 <h2 class="section-title">כל המשחקים</h2>
 
@@ -43,58 +42,194 @@
 
     <!-- משחק פעיל 1 -->
     <div class="game-card active" onclick="openGame(1)">
-        <img src="../img/game1.jpg" alt="">
-        <p>משחק זיכרון</p>
+        <img src="../img/image1.jpg" alt="">
+        <div class="game-name">משחק הזיכרון </div>
     </div>
 
     <!-- משחק פעיל 2 -->
     <div class="game-card active" onclick="openGame(2)">
-        <img src="../img/game2.jpg" alt="">
-        <p>תפוס את הכדור</p>
+        <img src="../img/image2.png" alt="">
+        <div class="game-name">טריוויה</div>
     </div>
 
     <!-- שאר המשחקים — בפיתוח -->
-    <div class="game-card disabled">
-        <img src="../img/placeholder.jpg" alt="">
-        <p>בפיתוח</p>
-    </div>
-
-    <div class="game-card disabled">
-        <img src="../img/placeholder.jpg" alt="">
-        <p>בפיתוח</p>
-    </div>
-
-    <div class="game-card disabled">
-        <img src="../img/placeholder.jpg" alt="">
-        <p>בפיתוח</p>
-    </div>
-
-    <div class="game-card disabled">
-        <img src="../img/placeholder.jpg" alt="">
-        <p>בפיתוח</p>
-    </div>
-
-    <div class="game-card disabled">
-        <img src="../img/placeholder.jpg" alt="">
-        <p>בפיתוח</p>
-    </div>
-
-    <div class="game-card disabled">
-        <img src="../img/placeholder.jpg" alt="">
-        <p>בפיתוח</p>
-    </div>
-
-    <div class="game-card disabled">
-        <img src="../img/placeholder.jpg" alt="">
-        <p>בפיתוח</p>
-    </div>
-
-    <div class="game-card disabled">
-        <img src="../img/placeholder.jpg" alt="">
-        <p>בפיתוח</p>
-    </div>
-
+<div class="game-card disabled">
+    <img src="../img/image3.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name"> כדור אדום</div>
 </div>
+<div class="game-card disabled">
+    <img src="../img/image4.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">מיינקראפט </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image5.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">קיזי </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image6.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">מרוץ מכוניות </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image7.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">רובי הרובוט </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image8.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">שדה תימן</div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image9.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">מפלצות </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image10.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">אל תפיל תבקבוק </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image11.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">איירון בול </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image12.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">דומינו </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image13.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">מסלול בוץ </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image14.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">באבלס </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image15.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">חלי החילזון </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image16.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">חילוץ מכוניות  </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image17.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name"> דינמונס </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image18.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">טאף בוי </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image19.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">קוים זוהרים </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image20.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">מרוץ אופנועים </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image21.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">אש ומים 5 </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image22.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">ריף דולפינים </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image23.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">על ראש הגנב בוער הכובע </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image24.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">קולור לאב </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image25.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">טום החתול </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image26.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">עד מתי </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image27.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">בולס רייס </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image28.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">מיצי החתול </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image29.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">מוטוסייקל רייס </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image30.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">קליעה לבלוט </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image31.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">משקה יקר  </div>
+</div>
+<div class="game-card disabled">
+    <img src="../img/image32.jpg">
+    <div class="ribbon">בפיתוח</div>
+    <div class="game-name">פייר הירו </div>
+</div>
+
+
+
+<!-- מודאל פרופיל (אם כבר יצרת אותו, הוא יכול להישאר כאן) -->
+<div id="profileModal" class="modal hidden">
+    <div class="modal-content">
+
+        <!-- לוגו -->
+        <img src="../img/imagelogo.png" class="profile-logo" alt="logo">
+
+        <h2 class="modal-title">הפרופיל שלי</h2>
+
+        <div class="profile-row"><strong>שם משתמש:</strong> <span id="p_username"></span></div>
+        <div class="profile-row"><strong>תאריך הצטרפות:</strong> <span id="p_created"></span></div>
+        <div class="profile-row"><strong>מספר כניסות:</strong> <span id="p_visits"></span></div>
+        <div class="profile-row"><strong>משחקים ששיחקתי:</strong> <span id="p_gamesPlayed"></span></div>
+        <div class="profile-row"><strong>זמן משחק כולל:</strong> <span id="p_totalPlayTime"></span></div>
+
+        <h3 class="achieve-title">הישגים</h3>
+        <ul id="p_achievements"></ul>
+
+        <span id="closeModal" class="close">&times;</span>
+    </div>
+</div>
+
+
+<script src="../js/profile-modal.js"></script>
 
 <script>
 function openGame(num) {
@@ -102,19 +237,27 @@ function openGame(num) {
     if (num === 2) window.location.href = "catch.html";
 }
 </script>
+
 <script>
-const btn = document.getElementById("categoriesBtn");
-const menu = document.getElementById("categoriesMenu");
+// קוד קטגוריות – דואג שהתפריט יעבוד
+document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("categoriesBtn");
+    const menu = document.getElementById("categoriesMenu");
 
-btn.addEventListener("click", () => {
-    menu.classList.toggle("hidden");
-});
+    if (!btn || !menu) return;
 
-// סגירה בלחיצה מחוץ לתפריט
-document.addEventListener("click", (e) => {
-    if (!btn.contains(e.target) && !menu.contains(e.target)) {
-        menu.classList.add("hidden");
-    }
+    // פתיחה/סגירה של התפריט
+    btn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        menu.classList.toggle("hidden");
+    });
+
+    // סגירה בלחיצה מחוץ
+    document.addEventListener("click", (event) => {
+        if (!menu.contains(event.target) && !btn.contains(event.target)) {
+            menu.classList.add("hidden");
+        }
+    });
 });
 </script>
 
