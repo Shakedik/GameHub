@@ -104,3 +104,131 @@
 .hidden {
     display: none;
 }
+
+/* css/profiles.css */
+
+/* רקע כהה לכל המסך */
+.profile-modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* כהה מעט */
+    backdrop-filter: blur(5px); /* טשטוש הרקע שמאחורה */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+/* כשהמודאל פתוח */
+.profile-modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* הכרטיס עצמו - Glassmorphism */
+.profile-card-glass {
+    width: 380px;
+    padding: 30px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.85); /* לבן חצי שקוף */
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    text-align: center;
+    position: relative;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    direction: rtl;
+    color: #333;
+    animation: slideUp 0.4s ease-out;
+}
+
+/* כפתור סגירה אדום */
+.close-red-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+}
+
+.close-red-btn:hover {
+    transform: scale(1.1);
+    background: #ff3333;
+}
+
+/* כותרת ולוגו */
+.profile-header h2 {
+    color: #007bff; /* כחול */
+    margin-top: 10px;
+    font-size: 24px;
+}
+
+.profile-logo-img {
+    width: 60px;
+    height: auto;
+}
+
+/* שורות הטקסט */
+.profile-details {
+    margin-top: 20px;
+    text-align: right;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.p-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.p-row strong {
+    color: #555;
+}
+
+.divider {
+    border: 0;
+    height: 1px;
+    background: #ccc;
+    margin: 10px 0;
+}
+
+.highlight {
+    color: #0056b3;
+    font-weight: bold;
+}
+
+/* חלק תחתון */
+.profile-footer {
+    margin-top: 20px;
+}
+
+.achievements-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.no-achievements {
+    font-size: 12px;
+    color: #777;
+    margin-top: 5px;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}

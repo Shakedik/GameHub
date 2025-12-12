@@ -2,13 +2,13 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     direction: rtl;
-    background: linear-gradient(#0b74da, #056ac3);
+    background: linear-gradient(#000964, rgba(0, 180, 255, 0.45));
     min-height: 100vh;
 }
 
 /* HEADER */
 .main-header {
-    background: #57afd7;
+    background: #1b258b;
     padding: 15px 30px;
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;

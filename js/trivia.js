@@ -193,14 +193,23 @@ function useTime() {
 }
 
 function endGame() {
-    const passed = score >= 60;
-    const coinsReward = passed ? 5 : 0;
+    const passed = score >= 60; // צריך 60 במשחק כדי לעבור
+    const coinsReward = passed ? 5 : 0; // 5 מטבעות לניצחון
     
-    UserStore.recordTriviaResult(passed, score, coinsReward);
+    // חישוב הנקודות לדירוג לפי הדרישה החדשה
+    // ניצחון = 100 נקודות, הפסד = מינוס 35 נקודות
+    const rankPoints = passed ? 100 : -35;
     
+    // שליחת העדכון ל"מוח" של המערכת
+    UserStore.recordTriviaResult(passed, rankPoints, coinsReward);
+    
+    // עדכון התצוגה במודאל סיום המשחק
     const modal = document.getElementById('resultModal');
     document.getElementById('resTitle').innerText = passed ? "ניצחון! 🏆" : "הפסדת... 😞";
-    document.getElementById('resScore').innerText = `ניקוד סופי: ${score}`;
+    
+    // כאן נציג למשתמש כמה נקודות דירוג הוא קיבל/איבד
+    const pointsMsg = passed ? `+${rankPoints} נקודות לדירוג!` : `${rankPoints} נקודות מהדירוג.`;
+    document.getElementById('resScore').innerText = `ניקוד במשחק: ${score} | ${pointsMsg}`;
     
     modal.classList.remove('hidden');
 }

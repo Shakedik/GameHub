@@ -1,60 +1,55 @@
-// טעינת משתמשים
-function loadUsers() {
-    return JSON.parse(localStorage.getItem("users")) || [];
-}
+/* js/profile-modal.js */
 
-// טעינת המשתמש הנוכחי
-function loadCurrentUser() {
-    const username = localStorage.getItem("currentUser");
-    if (!username) return null;
+document.addEventListener("DOMContentLoaded", () => {
+    const modalOverlay = document.getElementById("profileModal");
+    const closeBtn = document.getElementById("closeProfileBtn");
+    const openBtn = document.getElementById("profileBtn"); // הכפתור ב-header
 
-    const users = loadUsers();
-    return users.find(u => u.username === username);
-}
+    if (!openBtn || !modalOverlay) return;
 
-// תצוגת זמן יפה
-function formatTime(ms) {
-    const min = Math.floor(ms / 60000);
-    const sec = Math.floor((ms % 60000) / 1000);
-    return `${min} דק' ${sec} שניות`;
-}
+    // פתיחת מודאל
+    openBtn.addEventListener("click", () => {
+        const user = UserStore.getCurrentUser();
+        if (!user) {
+            alert("לא נמצא משתמש מחובר");
+            return;
+        }
 
-//----- הפעלת המודאל -----
-const modal = document.getElementById("profileModal");
-const openBtn = document.getElementById("profileBtn");
-const closeBtn = document.getElementById("closeModal");
+        // מילוי נתונים
+        document.getElementById("p_user").textContent = user.username;
+        document.getElementById("p_date").textContent = new Date(user.createdAt).toLocaleDateString("he-IL");
+        document.getElementById("p_logins").textContent = user.visits || 1;
+        document.getElementById("p_games").textContent = user.gamesPlayed || 0;
+        document.getElementById("p_time").textContent = formatTime(user.totalPlayTime || 0);
+        
+        // נתונים חדשים
+        document.getElementById("p_coins").textContent = user.coins || 0;
+        document.getElementById("p_score").textContent = user.score || 0;
 
-openBtn.addEventListener("click", () => {
-    const user = loadCurrentUser();
-    if (!user) return;
+        // הצגה
+        modalOverlay.classList.remove("hidden");
+        // נותן זמן קצר כדי שה-transition של ה-CSS יעבוד
+        setTimeout(() => modalOverlay.classList.add("open"), 10);
+    });
 
-    document.getElementById("p_username").innerText = user.username;
-    document.getElementById("p_created").innerText = new Date(user.createdAt).toLocaleDateString("he-IL");
-    document.getElementById("p_visits").innerText = user.visits;
-    document.getElementById("p_gamesPlayed").innerText = user.gamesPlayed || 0;
-    document.getElementById("p_totalPlayTime").innerText = formatTime(user.totalPlayTime || 0);
-
-    const achList = document.getElementById("p_achievements");
-    achList.innerHTML = "";
-
-    if (user.achievements.length === 0) {
-        achList.innerHTML = "<li>אין הישגים עדיין</li>";
-    } else {
-        user.achievements.forEach(a => {
-            const li = document.createElement("li");
-            li.innerText = a;
-            achList.appendChild(li);
-        });
+    // סגירת מודאל
+    function closeModal() {
+        modalOverlay.classList.remove("open");
+        setTimeout(() => modalOverlay.classList.add("hidden"), 300);
     }
 
-    modal.classList.remove("hidden");
-});
+    if (closeBtn) closeBtn.addEventListener("click", closeModal);
+    
+    // סגירה בלחיצה בחוץ
+    modalOverlay.addEventListener("click", (e) => {
+        if (e.target === modalOverlay) closeModal();
+    });
 
-closeBtn.addEventListener("click", () => {
-    modal.classList.add("hidden");
-});
-
-// סגירה בלחיצה על הרקע
-modal.addEventListener("click", (e) => {
-    if (e.target === modal) modal.classList.add("hidden");
+    // פונקציית עזר לזמן
+    function formatTime(ms) {
+        const totalSec = Math.floor(ms / 1000);
+        const min = Math.floor(totalSec / 60);
+        const sec = totalSec % 60;
+        return `${min} דק' ${sec} שניות`;
+    }
 });

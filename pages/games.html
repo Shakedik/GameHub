@@ -227,7 +227,33 @@
         <span id="closeModal" class="close">&times;</span>
     </div>
 </div>
+<div id="profileModal" class="profile-modal-overlay hidden">
+    <div class="profile-card-glass">
+        <button id="closeProfileBtn" class="close-red-btn">✖</button>
 
+        <div class="profile-header">
+            <img src="../images/imagelogo.png" alt="Logo" class="profile-logo-img">
+            <h2>הפרופיל שלי</h2>
+        </div>
+
+        <div class="profile-details">
+            <div class="p-row"><strong>שם משתמש:</strong> <span id="p_user"></span></div>
+            <div class="p-row"><strong>תאריך הצטרפות:</strong> <span id="p_date"></span></div>
+            <div class="p-row"><strong>מספר כניסות:</strong> <span id="p_logins"></span></div>
+            <div class="p-row"><strong>משחקים ששיחקתי:</strong> <span id="p_games"></span></div>
+            <div class="p-row"><strong>זמן משחק כולל:</strong> <span id="p_time"></span></div>
+            <hr class="divider">
+            <div class="p-row highlight"><strong>מטבעות:</strong> 💰 <span id="p_coins"></span></div>
+            <div class="p-row highlight"><strong>ניקוד דירוג:</strong> 🏆 <span id="p_score"></span></div>
+        </div>
+
+        <div class="profile-footer">
+            <a href="#" class="achievements-link">הישגים</a>
+            <p class="no-achievements">• אין הישגים עדיין</p>
+        </div>
+    </div>
+</div>
+<script src="../js/users.js"></script>
 
 <script src="../js/profile-modal.js"></script>
 
