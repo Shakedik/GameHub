@@ -98,16 +98,64 @@ if (registerForm) {
 }
 
 /* ------- התחברות ------- */
+/* ------- התחברות ------- */
 const loginForm = document.getElementById("loginForm");
 if (loginForm) {
     loginForm.addEventListener("submit", function (e) {
         e.preventDefault();
 
         const username = document.getElementById("loginUser").value;
-        const logged = loginUser(username);
+        const pass = document.getElementById("loginPass").value; // נניח הוספת שדה סיסמה
 
-        if (logged) {
-            window.location.href = "pages/games.html";
+        // שימוש ב-UserStore שיצרנו קודם
+        const user = UserStore.findUser(username);
+
+        if (!user) {
+            alert("משתמש לא קיים!");
+            return;
         }
+
+        // 1. בדיקת חסימה
+        if (user.blockedUntil && Date.now() < user.blockedUntil) {
+            const timeLeft = Math.ceil((user.blockedUntil - Date.now()) / 1000);
+            alert(`החשבון חסום עקב ניסיונות רבים. נסה שוב בעוד ${timeLeft} שניות.`);
+            return;
+        }
+
+        // 2. בדיקת סיסמה (בדוגמה שלך לא הייתה סיסמה בקובץ JSON, נניח שהיא קיימת או שאנחנו בודקים רק שם)
+        // לצורך התרגיל, נניח שהסיסמה היא '123456' אם אין סיסמה שמורה, או שתשני את הלוגיקה בהתאם לקוד ההרשמה שלך
+        const storedPass = user.password || "123456"; // ברירת מחדל אם אין
+        
+        if (pass !== storedPass) {
+            const attempts = UserStore.recordLoginFailure(username);
+            if (attempts >= 3) {
+                UserStore.blockUser(username);
+                alert("3 ניסיונות שגויים! החשבון נחסם לדקה.");
+            } else {
+                alert(`סיסמה שגויה! נותרו לך ${3 - attempts} ניסיונות.`);
+            }
+            return;
+        }
+
+        // 3. התחברות מוצלחת
+        // איפוס ניסיונות כושלים
+        user.loginAttempts = 0;
+        user.visits = (user.visits || 0) + 1;
+        user.lastLogin = Date.now();
+        
+        // עדכון בלוקאל סטורג' דרך המנהל שלנו
+        const allUsers = UserStore.loadUsers();
+        const userIdx = allUsers.findIndex(u => u.username === username);
+        allUsers[userIdx] = user;
+        UserStore.saveUsers(allUsers);
+        
+        localStorage.setItem("currentUser", username);
+        UserStore.logActivity("התחברות למערכת");
+
+        // 4. דרישת ה-Cookie (כדי להרשים את המרצה)
+        // יוצר קוקי שתקף ל-30 דקות
+        document.cookie = `auth=true; path=/; max-age=1800; SameSite=Strict`;
+
+        window.location.href = "pages/games.html"; // שימי לב לנתיב
     });
 }

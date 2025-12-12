@@ -1,0 +1,282 @@
+:root {
+    --bg-color: #0b1a3a;
+    --card-bg: #12234a;
+    --btn-border: #2e4a85;
+    --accent: #ff0055;
+    --text-main: #ffffff;
+    --text-dim: #8b9bb4;
+}
+
+body {
+    margin: 0;
+    font-family: 'Rubik', sans-serif;
+    background-color: var(--bg-color);
+    background-image: url('../images/imageback.jpg');
+    background-size: cover;
+    background-blend-mode: overlay;
+    color: var(--text-main);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.exit-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    text-decoration: none;
+    color: var(--text-dim);
+    font-size: 14px;
+    z-index: 20;
+}
+
+/* --- Start Screen Overlay --- */
+.start-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(11, 26, 58, 0.95); /* כחול כהה כמעט אטום */
+    z-index: 100; /* מעל הכל */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: opacity 0.5s ease;
+}
+
+.start-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.start-content {
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid var(--btn-border);
+    box-shadow: 0 0 30px rgba(0,217,255,0.1);
+    max-width: 400px;
+}
+
+.game-logo { font-size: 60px; margin-bottom: 10px; }
+.start-content h1 { margin: 10px 0; font-size: 36px; color: #00d9ff; }
+.costs-info { font-size: 14px; color: var(--text-dim); background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; margin: 20px 0; }
+
+.big-start-btn {
+    background: linear-gradient(45deg, #ff0055, #ffcc00);
+    border: none;
+    padding: 15px 40px;
+    font-size: 22px;
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4);
+    transition: transform 0.2s;
+}
+.big-start-btn:hover { transform: scale(1.05); }
+
+/* --- Game Container --- */
+.game-container {
+    width: 100%;
+    max-width: 500px;
+    height: 95vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: filter 0.3s;
+}
+
+.game-container.blur-bg {
+    filter: blur(5px); /* טשטוש כשהמסך פתיחה פתוח */
+}
+
+/* --- Header & Timer --- */
+.header-bar { display: flex; justify-content: space-between; align-items: center; padding: 0 10px; }
+.stage-indicator { font-size: 18px; color: #00d9ff; font-weight: bold; }
+.coins-indicator { font-size: 18px; font-weight: bold; }
+
+.timer-circle { position: relative; width: 70px; height: 70px; display: flex; justify-content: center; align-items: center; }
+.timer-circle svg { width: 70px; height: 70px; transform: rotate(-90deg); }
+.timer-circle circle { fill: none; stroke-width: 5; }
+.timer-circle circle:first-child { stroke: #1e3a6e; }
+.timer-circle circle:nth-child(2) { stroke: #ff0055; stroke-dasharray: 188; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear; }
+#timerText { position: absolute; font-size: 20px; font-weight: bold; }
+
+/* --- Question --- */
+.question-area {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    margin: 20px 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    border: 1px solid var(--btn-border);
+}
+.q-counter { position: absolute; top: 15px; left: 15px; font-size: 14px; color: var(--text-dim); }
+#questionText { font-size: 22px; line-height: 1.4; font-weight: 500; }
+
+/* --- Answers --- */
+.answers-container { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+.answer-btn {
+    background: transparent;
+    border: 2px solid var(--btn-border);
+    color: white;
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-family: inherit;
+}
+.answer-btn:hover { background: rgba(255,255,255,0.1); border-color: #4f76c9; }
+.answer-btn.correct { background: #00c853; border-color: #00c853; }
+.answer-btn.wrong { background: #d50000; border-color: #d50000; }
+
+/* --- Lifelines --- */
+.lifelines-container { display: flex; justify-content: center; gap: 20px; margin-bottom: 10px; }
+.lifeline-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; }
+.lifeline-btn {
+    width: 50px; height: 50px; border-radius: 50%; border: none;
+    background: linear-gradient(135deg, #2b4a85, #162850);
+    color: white; cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    display: flex; justify-content: center; align-items: center;
+    transition: 0.2s;
+}
+.lifeline-btn:hover { transform: scale(1.1); }
+.lifeline-btn:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
+
+.icon-skip::before { content: "⏭"; font-size: 18px; }
+.icon-time::before { content: "⏰"; font-size: 18px; }
+.icon-fifty { font-size: 12px; font-weight: bold; }
+
+.badge {
+    position: absolute; top: -5px; right: -5px;
+    background: #ff0055; color: white; font-size: 10px;
+    width: 18px; height: 18px; border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    font-weight: bold; z-index: 2; border: 2px solid var(--bg-color);
+}
+.label { font-size: 11px; margin-top: 5px; color: var(--text-dim); }
+
+/* --- Modal --- */
+.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 200; }
+.modal.hidden { display: none; }
+.modal-content { background: white; color: #333; padding: 30px; border-radius: 20px; text-align: center; width: 300px; }
+.modal-btns button { margin: 5px; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+.modal-btns button:first-child { background: #00d9ff; color: #000; }
+
+/* =========================================
+   תוספות למסך הנחיתה (להדביק בסוף הקובץ)
+   ========================================= */
+
+/* מסך הכיסוי הכהה */
+.start-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(11, 26, 58, 0.95); /* כחול כהה כמעט אטום */
+    z-index: 200; /* מעל הכל */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: opacity 0.5s ease;
+    backdrop-filter: blur(5px); /* טשטוש נוסף לרקע */
+}
+
+/* מחלקה להעלמת המסך */
+.start-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* הקופסה הפנימית של מסך הפתיחה */
+.start-content {
+    background: var(--card-bg); /* משתמש במשתנה הקיים שלך */
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid var(--btn-border);
+    box-shadow: 0 0 30px rgba(0, 217, 255, 0.15);
+    max-width: 400px;
+    width: 90%;
+    animation: popIn 0.5s ease; /* אנימציית כניסה */
+}
+
+.game-logo {
+    font-size: 60px;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.start-content h1 {
+    margin: 10px 0;
+    font-size: 32px;
+    color: #00d9ff;
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+}
+
+.start-content p {
+    color: var(--text-dim);
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+/* קופסת המידע על העלויות */
+.costs-info {
+    background: rgba(0, 0, 0, 0.25);
+    padding: 15px;
+    border-radius: 12px;
+    margin: 20px 0;
+    font-size: 14px;
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    line-height: 1.8;
+}
+
+/* כפתור "התחל משחק" הגדול */
+.big-start-btn {
+    background: linear-gradient(45deg, #ff0055, #ffcc00);
+    border: none;
+    padding: 15px 50px;
+    font-size: 22px;
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: 'Rubik', sans-serif;
+    margin-top: 10px;
+}
+
+.big-start-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 0, 85, 0.6);
+}
+
+/* אפקט טשטוש למשחק שמאחורה */
+.game-container {
+    transition: filter 0.3s ease;
+}
+
+.game-container.blur-bg {
+    filter: blur(8px);
+}
+
+/* אנימציית הופעה */
+@keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}

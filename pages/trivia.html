@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub - טריוויה</title>
+    <link rel="stylesheet" href="../css/trivia.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <a href="games.html" class="exit-btn">✖ יציאה</a>
+
+    <div id="startScreen" class="start-overlay">
+        <div class="start-content">
+            <div class="game-logo">🧠</div>
+            <h1>חידון הטריוויה</h1>
+            <p>5 שאלות, 3 עזרות, מנצח אחד.</p>
+            <p class="costs-info">
+                עלויות עזרה:<br>
+                ⏭ דילוג: 6 💰 | 🌓 50:50: 5 💰 | ⏰ זמן: 3 💰
+            </p>
+            <button id="realStartBtn" class="big-start-btn">התחל משחק 🚀</button>
+        </div>
+    </div>
+
+    <div class="game-container blur-bg"> <div class="header-bar">
+            <div class="stage-indicator">שלב <span id="stageNumber">1</span></div>
+            
+            <div class="timer-circle">
+                <svg>
+                    <circle r="30" cx="35" cy="35"></circle>
+                    <circle id="progressRing" r="30" cx="35" cy="35"></circle>
+                </svg>
+                <span id="timerText">15</span>
+            </div>
+
+            <div class="coins-indicator">💰 <span id="coinsCount">0</span></div>
+        </div>
+
+        <div class="question-area">
+            <div class="q-counter"><span id="qCurrent">1</span>/5</div>
+            <h2 id="questionText">המשחק עומד להתחיל...</h2>
+        </div>
+
+        <div class="answers-container">
+            <button class="answer-btn">תשובה 1</button>
+            <button class="answer-btn">תשובה 2</button>
+            <button class="answer-btn">תשובה 3</button>
+            <button class="answer-btn">תשובה 4</button>
+        </div>
+
+        <div class="lifelines-container">
+            <div class="lifeline-wrapper" id="skipBtn">
+                <div class="badge" id="skipCount">1</div>
+                <button class="lifeline-btn icon-skip"></button>
+                <span class="label">דלג (6)</span>
+            </div>
+
+            <div class="lifeline-wrapper" id="fiftyBtn">
+                <div class="badge" id="fiftyCount">1</div>
+                <button class="lifeline-btn icon-fifty">50:50</button>
+                <span class="label">חצי (5)</span>
+            </div>
+
+            <div class="lifeline-wrapper" id="timeBtn">
+                <div class="badge" id="timeCount">1</div>
+                <button class="lifeline-btn icon-time"></button>
+                <span class="label">זמן (3)</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="resultModal" class="modal hidden">
+        <div class="modal-content">
+            <h2 id="resTitle">כל הכבוד!</h2>
+            <p id="resScore">ניקוד: 100</p>
+            <div class="modal-btns">
+                <button onclick="location.reload()">שחק שוב</button>
+                <button onclick="window.location.href='games.html'">יציאה</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/users.js"></script>
+    <script src="../js/trivia.js"></script>
+</body>
+</html>
