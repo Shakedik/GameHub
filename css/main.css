@@ -170,3 +170,46 @@ body {
     width: 80px; /* גודל קטן שמתאים לפינה */
     height: auto;
 }
+
+/* התאמה למובייל - עמוד הבית */
+@media (max-width: 768px) {
+    body {
+        /* מבטל גלילה מיותרת */
+        height: 100vh;
+        overflow-y: hidden; 
+    }
+
+    .hero-container {
+        width: 100%;
+        padding: 0 15px;
+        box-sizing: border-box;
+    }
+
+    .big-logo img {
+        width: 150px; /* לוגו קטן יותר */
+        margin-bottom: 5px;
+    }
+
+    .title {
+        font-size: 42px; /* כותרת בגודל קריא */
+    }
+
+    .subtitle {
+        font-size: 18px;
+        margin-bottom: 25px;
+    }
+
+    .buttons {
+        flex-direction: column; /* כפתורים אחד מתחת לשני */
+        gap: 15px;
+        align-items: center;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;      /* רוחב מלא */
+        max-width: 300px; /* שלא יהיה ענק מדי */
+        font-size: 18px;
+        padding: 12px 0;
+    }
+}

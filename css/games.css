@@ -210,3 +210,61 @@ body {
     transform: scale(1.1); /* גדל קצת */
     box-shadow: 0 0 10px rgba(255, 77, 77, 0.5); /* זוהר אדמדם */
 }
+/* =========================================
+   תוספות רספונסיביות (להעתיק לסוף הקובץ)
+   ========================================= */
+
+@media (max-width: 768px) {
+    /* --- סידור ההדר (Header) לנייד --- */
+    .main-header {
+        padding: 10px 15px; /* מקטין את הריפוד בצדדים */
+        height: auto;
+    }
+
+    .logo {
+        font-size: 20px; /* לוגו קטן יותר */
+    }
+
+    /* הסתרת הקישורים הטקסטואליים (כמו 'משחקים מובילים') בטלפון כדי למנוע עומס */
+    .nav-menu a {
+        display: none;
+    }
+
+    /* הקטנת כפתור הקטגוריות */
+    .cat-btn {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+
+    /* הקטנת האייקונים של הפרופיל והיציאה */
+    .icons {
+        gap: 8px;
+    }
+
+    .icon-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+    }
+
+    /* --- סידור גריד המשחקים --- */
+    .games-grid {
+        /* מגדיר בדיוק 2 משחקים בשורה בטלפון עומד */
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 12px;     /* רווח קטן יותר בין הכרטיסים */
+        padding: 15px; /* פחות שוליים מהצדדים */
+    }
+    
+    .section-title {
+        font-size: 22px;
+        text-align: center;
+        padding: 10px;
+    }
+}
+
+/* --- התאמה למסכים בינוניים או טלפון לרוחב (3 בשורה) --- */
+@media (min-width: 481px) and (max-width: 850px) {
+    .games-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
