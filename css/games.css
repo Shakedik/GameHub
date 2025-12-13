@@ -196,3 +196,17 @@ body {
     font-size: 15px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.25);
 }
+
+/* עיצוב כפתור התנתקות */
+#logoutBtn {
+    color: #ff4d4d; /* צבע אדום */
+    margin-right: 10px; /* רווח קטן מכפתור הפרופיל */
+    transition: all 0.3s ease;
+}
+
+#logoutBtn:hover {
+    background-color: #ff4d4d; /* רקע אדום במעבר עכבר */
+    color: white; /* אייקון הופך ללבן */
+    transform: scale(1.1); /* גדל קצת */
+    box-shadow: 0 0 10px rgba(255, 77, 77, 0.5); /* זוהר אדמדם */
+}

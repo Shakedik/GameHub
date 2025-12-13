@@ -8,28 +8,31 @@ function saveUsers(users) {
 }
 
 /* ------- יצירת משתמש חדש ------- */
-function createUser(username) {
+function createUser(username, password) { // הוספנו את password כאן
     const users = loadUsers();
 
-    // לבדוק אם המשתמש כבר קיים
     if (users.some(u => u.username === username)) {
         alert("משתמש כבר קיים!");
         return null;
     }
 
     const newUser = {
-        username,
+        username: username,
+        password: password, // הוספנו שמירה של הסיסמה!
         createdAt: Date.now(),
         visits: 1,
         lastLogin: Date.now(),
         achievements: [],
         gamesPlayed: 0,
-        totalPlayTime: 0
+        totalPlayTime: 0,
+        coins: 0,
+        score: 0
     };
 
     users.push(newUser);
     saveUsers(users);
-
+    
+    // מעדכן את המשתמש הנוכחי
     localStorage.setItem("currentUser", username);
 
     return newUser;
@@ -86,12 +89,18 @@ if (registerForm) {
         e.preventDefault();
 
         const username = document.getElementById("regUser").value;
-        const created = createUser(username);
+        // הוספנו קריאה לערך של הסיסמה
+        const password = document.getElementById("regPass") ? document.getElementById("regPass").value : "123456"; 
+
+        // שליחת שם וסיסמה לפונקציה
+        const created = createUser(username, password);
 
         if (created) {
             throwConfetti();
             setTimeout(() => {
-                window.location.href = "pages/games.html";
+                // מפנה לדף המשחקים
+                window.location.href = "pages/games.html"; 
+                // הערה: אם קובץ ההרשמה נמצא בתוך תיקיית pages, צריך לשנות את הקישור ל: "games.html" בלבד
             }, 2000);
         }
     });

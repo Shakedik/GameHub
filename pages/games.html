@@ -32,7 +32,8 @@
     </nav>
 
     <div class="icons">
-        <button id="profileBtn" class="icon-btn">👤</button>
+        <button id="profileBtn" class="icon-btn" title="פרופיל אישי">👤</button>
+        <button id="logoutBtn" class="icon-btn logout-style" title="התנתקות">🏃</button>
     </div>
 </header>
 
@@ -259,6 +260,28 @@ document.addEventListener("DOMContentLoaded", () => {
             menu.classList.add("hidden");
         }
     });
+});
+</script>
+
+<script>
+// --- לוגיקת התנתקות ---
+document.addEventListener("DOMContentLoaded", () => {
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            // שואלים את המשתמש אם הוא בטוח
+            if (confirm("האם את/ה בטוח/ה שברצונך להתנתק?")) {
+                // קוראים לפונקציה הקיימת ב-UserStore
+                if (typeof UserStore !== "undefined") {
+                    UserStore.logout();
+                } else {
+                    // גיבוי למקרה שיש בעיה בטעינת הקובץ
+                    window.location.href = "../index.html";
+                }
+            }
+        });
+    }
 });
 </script>
 

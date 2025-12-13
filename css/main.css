@@ -156,3 +156,17 @@ body {
         transform: translateY(110vh) rotate(360deg);
     }
 }
+
+/* הגדרות ללוגו הגדול במרכז המסך */
+.big-logo img {
+    width: 300px; /* גודל סביר למרכז המסך - אפשר לשנות לפי הטעם */
+    height: auto; /* שומר על הפרופורציות */
+    display: block;
+    margin: 0 auto 20px auto; /* ממרכז אותו ונותן רווח מלמטה */
+}
+
+/* הגדרות ללוגו הקטן בפינה (בתוך ה-Header) */
+.site-logo img {
+    width: 80px; /* גודל קטן שמתאים לפינה */
+    height: auto;
+}
