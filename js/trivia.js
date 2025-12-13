@@ -1,7 +1,6 @@
-/* js/trivia.js */
+/* js/trivia.js - קובץ מלא עם תיקון לכפתור התחל */
 
-// --- מאגר השאלות מחולק לשלבים ---
-
+// --- מאגר השאלות ---
 const level1 = [
     { text: 'מה שם תרופת הדגל של חברת "טבע"?', answers: ['חיסון הקורונה', 'אזילקט', 'טיסברי', 'קופקסון'], correct: 3 },
     { text: 'מהו טייפון?', answers: ['מאכל נורבגי', 'מכשיר חשמלי', 'סופה טרופית', 'תקליט'], correct: 2 },
@@ -26,24 +25,35 @@ const level3 = [
     { text: 'השיר "דימיון חופשי" בוצע במקור על ידי:', answers: ['בעז שרעבי', 'רות דולורס וייס', 'יצחק קלפטר', 'שלום גד'], correct: 2 }
 ];
 
-const allLevels = [level1, level2, level3]; // מערך שמחזיק את כל השלבים
+const level4 = [
+    { text: 'מהי היבשת הגדולה ביותר בעולם?', answers: ['אפריקה', 'אירופה', 'אסיה', 'אמריקה הצפונית'], correct: 2 },
+    { text: 'איזה כוכב לכת הוא הקרוב ביותר לשמש?', answers: ['נוגה', 'מאדים', 'כדור הארץ', 'חמה (מרקורי)'], correct: 3 },
+    { text: 'כמה שניות יש בדקה וחצי?', answers: ['60', '90', '100', '120'], correct: 1 },
+    { text: 'מי צייר את המונה ליזה?', answers: ['ואן גוך', 'פיקאסו', 'לאונרדו דה וינצ\'י', 'מיכלאנג\'לו'], correct: 2 },
+    { text: 'מהו החומר הקשה ביותר בטבע?', answers: ['ברזל', 'יהלום', 'זהב', 'פלדה'], correct: 1 }
+];
+
+const level5 = [
+    { text: 'באיזו שנה הוקמה מדינת ישראל?', answers: ['1947', '1948', '1956', '1967'], correct: 1 },
+    { text: 'מהו האיבר הגדול ביותר בגוף האדם?', answers: ['המוח', 'הכבד', 'העור', 'הלב'], correct: 2 },
+    { text: 'מי היה ראש הממשלה הראשון של ישראל?', answers: ['מנחם בגין', 'יצחק רבין', 'דוד בן גוריון', 'שמעון פרס'], correct: 2 },
+    { text: 'כמה ימים יש בשנה מעוברת?', answers: ['365', '366', '360', '354'], correct: 1 },
+    { text: 'מהי בירת ברזיל?', answers: ['ריו דה ז\'ניירו', 'סאו פאולו', 'ברזיליה', 'בואנוס איירס'], correct: 2 }
+];
+
+const allLevels = [level1, level2, level3, level4, level5]; 
 
 // --- משתני ניהול משחק ---
-let currentLevelIndex = 0; // מתחילים משלב 0 (שלב 1)
-let questions = allLevels[0]; // השאלות הנוכחיות הן של שלב 1
+let currentLevelIndex = 0; 
+let questions = allLevels[0];
 let currentQIndex = 0;
 let score = 0;
+let correctCount = 0;
 let timerInterval;
 let timeLeft = 15;
 const MAX_TIME = 15;
 
-// מחירים
-const COSTS = {
-    SKIP: 6,
-    FIFTY: 5,
-    TIME: 3
-};
-
+const COSTS = { SKIP: 6, FIFTY: 5, TIME: 3 };
 let lifelines = { skip: 1, fifty: 1, time: 1 };
 
 // אלמנטים
@@ -52,25 +62,13 @@ const progressRing = document.getElementById('progressRing');
 const questionText = document.getElementById('questionText');
 const answerBtns = document.querySelectorAll('.answer-btn');
 const qCurrent = document.getElementById('qCurrent');
-const stageIndicator = document.getElementById('stageNumber'); // ודאי שיש לך אלמנט כזה ב-HTML
-
-// אלמנטים למעבר שלב
-const transitionScreen = document.getElementById('levelTransition');
-const levelTitle = document.getElementById('levelTitle');
+const stageIndicator = document.getElementById('stageNumber');
 
 const RADIUS = 30;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
 document.addEventListener('DOMContentLoaded', () => {
-    // אתחול טבעת טיימר
-    if(progressRing) {
-        progressRing.style.strokeDasharray = `${CIRCUMFERENCE} ${CIRCUMFERENCE}`;
-        progressRing.style.strokeDashoffset = 0;
-    }
-    
-    updateCoinsDisplay();
-
-    // כפתור התחלה במסך נחיתה
+    // 1. קודם כל מפעילים את הכפתור כדי שלא ייתקע
     const startBtn = document.getElementById('realStartBtn');
     if(startBtn) {
         startBtn.addEventListener('click', () => {
@@ -80,13 +78,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // כפתורי עזרה
+    // 2. בדיקה באיזה שלב להתחיל
+    const urlParams = new URLSearchParams(window.location.search);
+    const levelParam = urlParams.get('level');
+
+    if (levelParam) {
+        // בחירה ידנית מהמפה
+        const levelIndex = parseInt(levelParam) - 1;
+        if (levelIndex >= 0 && levelIndex < allLevels.length) {
+            currentLevelIndex = levelIndex;
+        }
+    } else {
+        // כניסה אוטומטית (ברירת מחדל: השלב המקסימלי שנפתח)
+        if (typeof UserStore !== 'undefined') {
+            try {
+                // משתמשים ב-getUserLevel (דרגה מקסימלית) כדי לא לאפס
+                const maxLevel = UserStore.getUserLevel(); 
+                
+                if (maxLevel > allLevels.length) {
+                    // אם סיים את כל המשחק - מתחיל מ-1
+                    currentLevelIndex = 0;
+                } else {
+                    // מתחיל בשלב הכי גבוה שפתוח
+                    currentLevelIndex = maxLevel - 1;
+                }
+            } catch (e) {
+                console.error("Error accessing UserStore:", e);
+                currentLevelIndex = 0; // ברירת מחדל במקרה תקלה
+            }
+        }
+    }
+
+    // טעינת השאלות
+    questions = allLevels[currentLevelIndex];
+
+    if(progressRing) {
+        progressRing.style.strokeDasharray = `${CIRCUMFERENCE} ${CIRCUMFERENCE}`;
+        progressRing.style.strokeDashoffset = 0;
+    }
+    
+    updateCoinsDisplay();
+
     const skipBtn = document.getElementById('skipBtn');
     if(skipBtn) skipBtn.onclick = useSkip;
-    
     const fiftyBtn = document.getElementById('fiftyBtn');
     if(fiftyBtn) fiftyBtn.onclick = useFifty;
-    
     const timeBtn = document.getElementById('timeBtn');
     if(timeBtn) timeBtn.onclick = useTime;
 });
@@ -94,39 +130,31 @@ document.addEventListener('DOMContentLoaded', () => {
 function updateCoinsDisplay() {
     if (typeof UserStore !== 'undefined') {
         const user = UserStore.getCurrentUser();
-        if(user) {
-            document.getElementById('coinsCount').innerText = user.coins || 0;
-        }
+        if(user) document.getElementById('coinsCount').innerText = user.coins || 0;
     }
 }
 
 function loadQuestion() {
     clearInterval(timerInterval);
-    
-    // עדכון תצוגת מספר שלב
     if(stageIndicator) stageIndicator.innerText = currentLevelIndex + 1;
 
-    // איפוס כפתורים
     answerBtns.forEach(btn => {
         btn.className = 'answer-btn';
         btn.disabled = false;
         btn.style.visibility = 'visible';
-        // ניקוי אירועי קליק ישנים ויצירה מחדש
         btn.onclick = (e) => checkAnswer(e, Array.from(answerBtns).indexOf(e.target));
     });
 
-    // הסתרת כפתורים מיותרים (אם יש שאלות כן/לא עם 2 תשובות בלבד)
     const q = questions[currentQIndex];
-    
     questionText.innerText = q.text;
     qCurrent.innerText = currentQIndex + 1;
     
     answerBtns.forEach((btn, idx) => {
         if (q.answers[idx]) {
             btn.innerText = q.answers[idx];
-            btn.style.display = 'block'; // מציג אם יש תשובה
+            btn.style.display = 'block'; 
         } else {
-            btn.style.display = 'none'; // מסתיר אם אין (למשל בשאלות נכון/לא נכון)
+            btn.style.display = 'none'; 
         }
     });
 
@@ -141,7 +169,7 @@ function startTimer() {
         updateTimerUI(timeLeft);
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
-            handleWrongAnswer(-1); // זמן עבר
+            handleWrongAnswer(-1); 
         }
     }, 1000);
 }
@@ -161,18 +189,14 @@ function checkAnswer(e, selectedIdx) {
     
     if (selectedIdx === correctIdx) {
         e.target.classList.add('correct');
-        score += 20 + timeLeft; // ניקוד: 20 + זמן שנותר
+        score += 20 + timeLeft; 
+        correctCount++; 
     } else {
         if(selectedIdx !== -1) e.target.classList.add('wrong');
-        
-        // מציאת הכפתור הנכון (גם אם חלק מוסתרים)
-        // שים לב: זה עובד לפי האינדקס המקורי של הכפתורים ב-DOM
         if(answerBtns[correctIdx]) answerBtns[correctIdx].classList.add('correct');
     }
 
     answerBtns.forEach(btn => btn.disabled = true);
-
-    // המתנה ומעבר לשלב הבא
     setTimeout(handleNextStep, 1500);
 }
 
@@ -180,137 +204,103 @@ function handleWrongAnswer(idx) {
     const correctIdx = questions[currentQIndex].correct;
     if(answerBtns[correctIdx]) answerBtns[correctIdx].classList.add('correct');
     answerBtns.forEach(btn => btn.disabled = true);
-    
     setTimeout(handleNextStep, 1500);
 }
 
-// --- פונקציה חדשה לניהול מעבר בין שאלות ושלבים ---
 function handleNextStep() {
     currentQIndex++;
-
-    // בדיקה האם נגמרו השאלות בשלב הנוכחי
     if (currentQIndex >= questions.length) {
-        
-        // בדיקה האם יש שלב הבא
-        if (currentLevelIndex + 1 < allLevels.length) {
-            // מעבר שלב!
-            currentLevelIndex++;
-            questions = allLevels[currentLevelIndex]; // טעינת השאלות של השלב הבא
-            currentQIndex = 0; // איפוס אינדקס שאלות
-            
-            // הפעלת אנימציית מעבר
-            showLevelTransition();
-        } else {
-            // נגמרו כל השלבים
-            endGame();
-        }
+        handleGameOver();
     } else {
-        // טעינת השאלה הבאה באותו שלב
         loadQuestion();
     }
 }
-
-function showLevelTransition() {
-    if (levelTitle) levelTitle.innerText = `שלב ${currentLevelIndex + 1}!`;
-    if (transitionScreen) {
-        transitionScreen.classList.remove('hidden');
-        
-        // המתנה של 2 שניות ואז התחלת השלב הבא
-        setTimeout(() => {
-            transitionScreen.classList.add('hidden');
-            loadQuestion();
-        }, 2000);
-    } else {
-        // גיבוי למקרה שאין מסך מעבר
-        loadQuestion();
-    }
-}
-
-// --- Lifelines Logic ---
 
 function useSkip() {
-    if (lifelines.skip > 0) {
-        if (UserStore.spendCoinsFromCurrent(COSTS.SKIP)) {
-            updateCoinsDisplay();
-            lifelines.skip--;
-            document.getElementById('skipCount').innerText = lifelines.skip;
-            document.querySelector('#skipBtn .lifeline-btn').disabled = true;
-            
-            // דילוג משתמש בפונקציית הצעד הבא
-            handleNextStep();
-        }
+    if (lifelines.skip > 0 && UserStore.spendCoinsFromCurrent(COSTS.SKIP)) {
+        updateCoinsDisplay();
+        lifelines.skip--;
+        document.getElementById('skipCount').innerText = lifelines.skip;
+        document.querySelector('#skipBtn .lifeline-btn').disabled = true;
+        handleNextStep();
     }
 }
 
 function useFifty() {
-    if (lifelines.fifty > 0) {
-        if (UserStore.spendCoinsFromCurrent(COSTS.FIFTY)) {
-            updateCoinsDisplay();
-            lifelines.fifty--;
-            document.getElementById('fiftyCount').innerText = lifelines.fifty;
-            document.querySelector('#fiftyBtn .lifeline-btn').disabled = true;
+    if (lifelines.fifty > 0 && UserStore.spendCoinsFromCurrent(COSTS.FIFTY)) {
+        updateCoinsDisplay();
+        lifelines.fifty--;
+        document.getElementById('fiftyCount').innerText = lifelines.fifty;
+        document.querySelector('#fiftyBtn .lifeline-btn').disabled = true;
 
-            const correct = questions[currentQIndex].correct;
-            let hiddenCount = 0;
-            
-            // לוגיקה מעודכנת להסתרה (מתחשבת בזה שיש שאלות עם 2 תשובות)
-            // סופרים כמה כפתורים גלויים כרגע
-            let visibleButtonsIndices = [];
-            answerBtns.forEach((btn, i) => {
-                if(btn.style.display !== 'none') visibleButtonsIndices.push(i);
-            });
-
-            // אם יש רק 2 תשובות (נכון/לא נכון), 50:50 לא אמור לעשות כלום או להשאיר רק את הנכון
-            if (visibleButtonsIndices.length <= 2) {
-                 // במקרה הזה נשאיר רק את הנכון - "מתנה"
-                 answerBtns.forEach((btn, i) => {
-                     if (i !== correct) btn.style.visibility = 'hidden';
-                 });
-                 return;
-            }
-
-            // הסתרה של 2 תשובות שגויות
-            for (let i = 0; i < 4; i++) {
-                if (i !== correct && hiddenCount < 2 && answerBtns[i].style.display !== 'none') {
-                    if (Math.random() > 0.3 || hiddenCount === 0) { // רנדומליות קלה
-                        answerBtns[i].style.visibility = 'hidden';
-                        hiddenCount++;
-                    }
+        const correct = questions[currentQIndex].correct;
+        let hiddenCount = 0;
+        answerBtns.forEach((btn, i) => {
+            if (i !== correct && hiddenCount < 2 && btn.style.display !== 'none') {
+                if (Math.random() > 0.3 || hiddenCount === 0) {
+                    btn.style.visibility = 'hidden';
+                    hiddenCount++;
                 }
             }
-        }
+        });
     }
 }
 
 function useTime() {
-    if (lifelines.time > 0) {
-        if (UserStore.spendCoinsFromCurrent(COSTS.TIME)) {
-            updateCoinsDisplay();
-            lifelines.time--;
-            document.getElementById('timeCount').innerText = lifelines.time;
-            document.querySelector('#timeBtn .lifeline-btn').disabled = true;
-            
-            timeLeft = Math.min(timeLeft + 10, MAX_TIME);
-            updateTimerUI(timeLeft);
-        }
+    if (lifelines.time > 0 && UserStore.spendCoinsFromCurrent(COSTS.TIME)) {
+        updateCoinsDisplay();
+        lifelines.time--;
+        document.getElementById('timeCount').innerText = lifelines.time;
+        document.querySelector('#timeBtn .lifeline-btn').disabled = true;
+        timeLeft = Math.min(timeLeft + 10, MAX_TIME);
+        updateTimerUI(timeLeft);
     }
 }
 
-function endGame() {
-    const passed = score >= 150; // העליתי את הרף כי יש יותר שאלות
-    const coinsReward = passed ? 15 : 2; // תגמול מוגדל
-    
-    const rankPoints = passed ? 100 : -35;
-    
-    if (typeof UserStore !== 'undefined') {
-        UserStore.recordTriviaResult(passed, rankPoints, coinsReward);
+function handleGameOver() {
+    if (typeof timerInterval !== 'undefined') clearInterval(timerInterval);
+
+    const totalQuestions = questions.length;
+    const successRate = (correctCount / totalQuestions) * 100;
+    const isWin = successRate > 50;
+
+    const modal = document.getElementById('gameResultModal');
+    const title = document.getElementById('resultTitle');
+    const message = document.getElementById('resultMessage');
+    const actionBtn = document.getElementById('modalActionBtn');
+
+    if (!modal || !title || !actionBtn) return;
+
+    if (isWin) {
+        title.innerText = "שלב הושלם! 🏆";
+        title.style.color = "#4cd137"; 
+        message.innerText = `צברת ${correctCount} כוכבים!`;
+        
+        if (typeof UserStore !== 'undefined') {
+            UserStore.saveLevelProgress(currentLevelIndex + 1, correctCount);
+            UserStore.updateGameStats(score);
+            UserStore.recordTriviaResult(true, score, 10);
+        }
+
+        actionBtn.innerText = "למפת השלבים 🗺️";
+        actionBtn.onclick = function() { window.location.href = "levels.html"; };
+
+    } else {
+        title.innerText = "נכשלת בשלב... 😕";
+        title.style.color = "#e84118"; 
+        message.innerText = `צריך מעל 50% כדי לעבור.\nענית נכון על ${correctCount} מתוך ${totalQuestions}.`;
+
+        if (typeof UserStore !== 'undefined') {
+             // שמירת הנתונים כך שהמפה תדע שנכשלת בשלב הספציפי,
+             // אבל users.js דואג שהדרגה המקסימלית לא תיפגע
+             UserStore.saveLevelProgress(currentLevelIndex + 1, correctCount);
+             UserStore.recordTriviaResult(false, 0, 0);
+        }
+
+        actionBtn.innerText = "חזור למפה 🗺️";
+        actionBtn.onclick = function() { window.location.href = "levels.html"; };
     }
-    
-    const modal = document.getElementById('resultModal');
-    if (modal) {
-        document.getElementById('resTitle').innerText = passed ? "ניצחון אדיר! 🏆" : "המשחק נגמר...";
-        const pointsMsg = passed ? `+${rankPoints} נקודות לדירוג!` : `${rankPoints} נקודות מהדירוג.`;
-        document.getElementById('resScore').innerText = `ניקוד סופי: ${score} | ${pointsMsg}`;
-        modal.classList.remove('hidden');
-    }
+
+    modal.classList.remove('hidden');
+    modal.style.display = 'flex';
 }

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מפת המסע - GameHub</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        body {
+            background-color: #130f40;
+            font-family: 'Rubik', sans-serif;
+            color: white;
+            margin: 0; padding: 0;
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        .exit-btn {
+            position: absolute; top: 20px; left: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff; padding: 10px 20px; border-radius: 30px;
+            text-decoration: none; backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s; z-index: 200; cursor: pointer;
+        }
+        .exit-btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.05); }
+
+        .header-section {
+            text-align: center; margin-top: 40px; margin-bottom: 20px; z-index: 10;
+        }
+        .header-section h1 { font-size: 2.5rem; margin: 0; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .header-section p { color: #a4b0be; font-size: 1.1rem; margin-top: 10px; }
+
+        .map-wrapper {
+            position: relative; width: 100%; max-width: 500px;
+            padding: 50px 0;
+            display: flex; flex-direction: column-reverse;
+            align-items: center;
+        }
+
+        .map-line {
+            position: absolute; top: 50px; bottom: 50px; left: 50%;
+            width: 4px; background: rgba(255,255,255,0.1);
+            transform: translateX(-50%); z-index: 0; border-radius: 10px;
+        }
+
+        .level-node {
+            width: 80px; height: 80px;
+            border-radius: 50%; background: #2f3542;
+            border: 4px solid #57606f;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.5rem; font-weight: bold; color: #747d8c;
+            position: relative; z-index: 2; margin: 30px 0;
+            cursor: not-allowed;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .level-node i { font-size: 1.2rem; }
+
+        /* ירוק - הושלם בהצלחה */
+        .level-node.completed {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            border-color: #badc58; color: white; cursor: pointer;
+        }
+
+        /* כתום - פתוח אך דורש ביצוע (או נכשל) */
+        .level-node.open-retry {
+            background: linear-gradient(135deg, #f0932b, #ffbe76);
+            border-color: #ffeaa7; color: white; cursor: pointer;
+            transform: scale(1.05);
+        }
+
+        /* אנימציה לשלב האחרון הפתוח */
+        .level-node.current-max {
+            animation: pulse 2s infinite;
+            transform: scale(1.1);
+        }
+        
+        .level-node.unlocked:hover, .level-node.completed:hover, .level-node.open-retry:hover { 
+            transform: scale(1.15); box-shadow: 0 0 25px rgba(255, 255, 255, 0.4); 
+        }
+
+        .level-label {
+            position: absolute; width: 140px; text-align: center;
+            font-size: 0.9rem; color: #dfe6e9; top: 50%; transform: translateY(-50%);
+        }
+        .level-node:nth-child(odd) .level-label { left: 100px; text-align: left; }
+        .level-node:nth-child(even) .level-label { right: 100px; text-align: right; }
+
+        .stars {
+            position: absolute; bottom: -25px; font-size: 14px;
+            color: #f1c40f; white-space: nowrap;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8); width: 100%; text-align: center;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(240, 147, 43, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(240, 147, 43, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(240, 147, 43, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="games.html" class="exit-btn">חזרה למשחקים <i class="fas fa-gamepad"></i></a>
+
+    <div class="header-section">
+        <h1>המסע שלך 🚀</h1>
+        <p>השלם את השלבים כדי להתקדם בדרגות</p>
+    </div>
+
+    <div class="map-wrapper" id="levelsMap">
+        <div class="map-line"></div>
+    </div>
+
+    <script src="../js/users.js"></script>
+    <script>
+        const TOTAL_LEVELS = 5; 
+        const PASS_THRESHOLD_STARS = 3;
+
+        const container = document.getElementById('levelsMap');
+        const user = UserStore.getCurrentUser();
+        const levelProgress = user ? (user.levelProgress || {}) : {};
+        
+        // הדרגה הכי גבוהה שהמשתמש הגיע אליה אי פעם (לא יורדת לעולם)
+        const userMaxLevel = UserStore.getUserLevel();
+
+        for (let i = 1; i <= TOTAL_LEVELS; i++) {
+            const node = document.createElement('div');
+            node.className = 'level-node';
+            
+            let content = '';
+            let labelText = `שלב ${i}`;
+            let starsHtml = '';
+            
+            const starsCount = levelProgress[i] || 0;
+            if (starsCount > 0) {
+                for(let s=0; s<starsCount; s++) starsHtml += '⭐';
+            }
+
+            // --- לוגיקה חדשה ---
+            
+            // בדיקה 1: האם השלב בכלל פתוח? (קטן או שווה לדרגה המקסימלית)
+            if (i <= userMaxLevel) {
+                node.onclick = () => window.location.href = `trivia.html?level=${i}`; 
+                
+                // בדיקה 2: האם השלב עבר בהצלחה? (יש מספיק כוכבים)
+                if (starsCount >= PASS_THRESHOLD_STARS) {
+                    node.classList.add('completed');
+                    content = `<i class="fas fa-check"></i>`;
+                    labelText += "<br><span style='color:#badc58'>הושלם</span>";
+                } 
+                // אחרת - השלב פתוח אבל נכשל/טרם בוצע
+                else {
+                    node.classList.add('open-retry');
+                    // אם זה השלב הכי גבוה שפתוח כרגע - נוסיף לו אפקט דופק
+                    if (i === userMaxLevel) {
+                        node.classList.add('current-max');
+                    }
+
+                    if (starsCount > 0) {
+                        content = `<i class="fas fa-redo"></i>`;
+                        labelText += "<br><span style='color:#ff7675'>נכשלת - נסה שוב</span>";
+                    } else {
+                        content = `${i}`;
+                        labelText += "<br><span style='color:#ffeaa7'>שחק עכשיו</span>";
+                    }
+                }
+            } 
+            // השלב נעול (גדול מהדרגה המקסימלית)
+            else {
+                content = `<i class="fas fa-lock"></i>`;
+                labelText += "<br>נעול";
+            }
+
+            node.innerHTML = `
+                ${content}
+                <div class="level-label">${labelText}</div>
+                <div class="stars">${starsHtml}</div>
+            `;
+            
+            container.appendChild(node);
+        }
+    </script>
+</body>
+</html>

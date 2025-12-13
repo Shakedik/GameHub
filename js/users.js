@@ -1,6 +1,7 @@
-/* js/users.js - ניהול מרכזי של משתמשים ונתונים - מעודכן */
+/* js/users.js - גרסה סופית ומתוקנת */
 
 const UserStore = {
+    // --- טעינה ושמירה ---
     loadUsers: function() {
         return JSON.parse(localStorage.getItem("users")) || [];
     },
@@ -9,6 +10,7 @@ const UserStore = {
         localStorage.setItem("users", JSON.stringify(users));
     },
 
+    // --- ניהול משתמש נוכחי ---
     getCurrentUser: function() {
         const username = localStorage.getItem("currentUser");
         if (!username) return null;
@@ -31,36 +33,22 @@ const UserStore = {
         return false;
     },
 
-    // --- פונקציה חדשה שהוספנו ---
+    // --- סטטיסטיקות ---
     updateGameStats: function(timePlayedMs) {
         const user = this.getCurrentUser();
         if (!user) return;
-
-        // עדכון מונה המשחקים
         const newGamesPlayed = (user.gamesPlayed || 0) + 1;
-        // עדכון הזמן הכולל (במילי-שניות)
         const newTotalTime = (user.totalPlayTime || 0) + timePlayedMs;
-
-        this.updateCurrentUser({
-            gamesPlayed: newGamesPlayed,
-            totalPlayTime: newTotalTime
-        });
+        this.updateCurrentUser({ gamesPlayed: newGamesPlayed, totalPlayTime: newTotalTime });
     },
-    // ---------------------------
 
     logActivity: function(description) {
         const user = this.getCurrentUser();
         if (!user) return;
-        
-        const newActivity = {
-            date: new Date().toLocaleString("he-IL"),
-            desc: description
-        };
-
+        const newActivity = { date: new Date().toLocaleString("he-IL"), desc: description };
         let activities = user.activity || [];
         activities.unshift(newActivity); 
         if (activities.length > 10) activities.pop();
-
         this.updateCurrentUser({ activity: activities });
     },
 
@@ -78,23 +66,62 @@ const UserStore = {
     recordTriviaResult: function(isWin, scoreChange, coinsReward) {
         const user = this.getCurrentUser();
         if (!user) return;
-
         const newScore = (user.score || 0) + scoreChange;
         const newCoins = (user.coins || 0) + coinsReward;
         const newWins = isWin ? (user.triviaWins || 0) + 1 : (user.triviaWins || 0);
         const newLosses = !isWin ? (user.triviaLosses || 0) + 1 : (user.triviaLosses || 0);
-
-        this.updateCurrentUser({
-            score: newScore,
-            coins: newCoins,
-            triviaWins: newWins,
-            triviaLosses: newLosses
-        });
-
+        this.updateCurrentUser({ score: newScore, coins: newCoins, triviaWins: newWins, triviaLosses: newLosses });
+        
         const status = isWin ? "ניצחון" : "הפסד";
         this.logActivity(`${status} בטריוויה: ${scoreChange > 0 ? '+' : ''}${scoreChange} נק'`);
     },
 
+    // --- שמירת התקדמות חכמה (שומרת על הדרגה הגבוהה) ---
+    saveLevelProgress: function(levelNum, starsCount) {
+        const user = this.getCurrentUser();
+        if (!user) return;
+
+        let progress = user.levelProgress || {}; 
+        // מעדכנים את הכוכבים של השלב הנוכחי (כדי שהמפה תראה אם נכשלת בו ספציפית)
+        progress[levelNum] = starsCount;
+
+        // חישוב הדרגה המקסימלית (Max Level) - עולה רק אם הצלחנו, לא יורדת לעולם
+        let currentMaxLevel = parseInt(user.level) || 1;
+        
+        // אם עברנו בהצלחה (3 כוכבים ומעלה) את השלב שהיינו תקועים בו
+        if (starsCount >= 3 && levelNum === currentMaxLevel) {
+            if (currentMaxLevel < 6) { // 5 שלבים מקסימום
+                currentMaxLevel++;
+            }
+        }
+        
+        this.updateCurrentUser({ 
+            levelProgress: progress,
+            level: currentMaxLevel
+        });
+    },
+
+    // --- פונקציה לחישוב השלב ה"בעייתי" למפה ---
+    // מחזירה את השלב הראשון שבו יש פחות מ-3 כוכבים (או את הבא בתור)
+    getRealLevel: function() {
+        const user = this.getCurrentUser();
+        if (!user) return 1;
+        
+        const progress = user.levelProgress || {};
+        // בודקים שלבים 1 עד 5. הראשון שאין בו 3 כוכבים הוא ה"אמיתי" לעיצוב המפה
+        for (let i = 1; i <= 5; i++) {
+             if ((progress[i] || 0) < 3) return i;
+        }
+        return 6; // הכל הושלם
+    },
+
+    // --- קבלת הדרגה המקסימלית (מה שפותח את המנעולים) ---
+    getUserLevel: function() {
+        const user = this.getCurrentUser();
+        return user ? (parseInt(user.level) || 1) : 1;
+    },
+
+    // --- התחברות ---
     logout: function() {
         localStorage.removeItem("currentUser");
         document.cookie = "auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";

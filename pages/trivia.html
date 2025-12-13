@@ -24,7 +24,8 @@
         </div>
     </div>
 
-    <div class="game-container blur-bg"> <div class="header-bar">
+    <div class="game-container blur-bg"> 
+        <div class="header-bar">
             <div class="stage-indicator">שלב <span id="stageNumber">1</span></div>
             
             <div class="timer-circle">
@@ -71,55 +72,41 @@
         </div>
     </div>
 
+    <div id="levelTransition" class="level-overlay hidden">
+        <div class="level-msg">
+            <h1 id="levelTitle">שלב 2!</h1>
+            <p>מתקדמים...</p>
+        </div>
+    </div>
 
-    <div id="resultModal" class="modal hidden">
-        <div class="modal-content">
-            <h2 id="resTitle">כל הכבוד!</h2>
-            <p id="resScore">ניקוד: 100</p>
-            <div class="modal-btns">
-                <button onclick="location.reload()">שחק שוב</button>
-                <button onclick="window.location.href='games.html'">יציאה</button>
-            </div>
+    <div id="gameResultModal" class="modal hidden" style="display: none;">
+        <div class="modal-content result-card">
+            <h2 id="resultTitle">כל הכבוד!</h2>
+            <p id="resultMessage">ניקוד: 100</p>
+            
+            <button id="modalActionBtn" class="continue-btn">המשך</button>
         </div>
     </div>
-    </div>
-        </div> <div id="levelTransition" class="level-overlay hidden">
-            <div class="level-msg">
-                <h1 id="levelTitle">שלב 2!</h1>
-                <p>מתקדמים...</p>
-            </div>
-        </div>
-        <div id="resultModal" class="modal hidden">
-            <div class="modal-content">
-                <h2 id="resTitle">כל הכבוד!</h2>
-                <p id="resScore">ניקוד: 100</p>
-                <div class="modal-btns">
-                    <button onclick="location.reload()">שחק שוב</button>
-                    <button onclick="window.location.href='games.html'">יציאה</button>
-                </div>
+
     <script src="../js/users.js"></script>
     <script src="../js/trivia.js"></script>
-</body>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // שומרים את הזמן שבו המשחק התחיל
+            const startTime = Date.now();
 
-<!--  שימי לב- פונקציה להוסיף לסוף הקובץ של trivia.html לפני הסגירה של תגיות ה- body וה- html: -->
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        // שומרים את הזמן שבו המשחק התחיל
-        const startTime = Date.now();
+            // כאשר המשתמש עוזב את העמוד (סוגר/חוזר אחורה/מרענן)
+            window.addEventListener("beforeunload", () => {
+                const endTime = Date.now();
+                const duration = endTime - startTime; // הזמן שעבר באלפיות שניה
 
-        // כאשר המשתמש עוזב את העמוד (סוגר/חוזר אחורה/מרענן)
-        window.addEventListener("beforeunload", () => {
-            const endTime = Date.now();
-            const duration = endTime - startTime; // הזמן שעבר באלפיות שניה
-
-            // קריאה לפונקציה החדשה ב-UserStore
-            if (typeof UserStore !== "undefined") {
-                UserStore.updateGameStats(duration);
-            }
+                // קריאה לפונקציה ב-UserStore
+                if (typeof UserStore !== "undefined") {
+                    UserStore.updateGameStats(duration);
+                }
+            });
         });
-    });
-</script>
+    </script>
 </body>
-</html>
 </html>
