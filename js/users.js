@@ -1,4 +1,4 @@
-/* js/users.js - ניהול מרכזי של משתמשים ונתונים */
+/* js/users.js - ניהול מרכזי של משתמשים ונתונים - מעודכן */
 
 const UserStore = {
     loadUsers: function() {
@@ -30,6 +30,23 @@ const UserStore = {
         }
         return false;
     },
+
+    // --- פונקציה חדשה שהוספנו ---
+    updateGameStats: function(timePlayedMs) {
+        const user = this.getCurrentUser();
+        if (!user) return;
+
+        // עדכון מונה המשחקים
+        const newGamesPlayed = (user.gamesPlayed || 0) + 1;
+        // עדכון הזמן הכולל (במילי-שניות)
+        const newTotalTime = (user.totalPlayTime || 0) + timePlayedMs;
+
+        this.updateCurrentUser({
+            gamesPlayed: newGamesPlayed,
+            totalPlayTime: newTotalTime
+        });
+    },
+    // ---------------------------
 
     logActivity: function(description) {
         const user = this.getCurrentUser();

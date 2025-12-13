@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // הדגשת המשתמש הנוכחי
         const currentUser = UserStore.getCurrentUser();
         if (currentUser && u.username === currentUser.username) {
-            tr.style.backgroundColor = "#e3f2fd";
+            tr.style.backgroundColor = "#3d7092ff";
             tr.style.fontWeight = "bold";
         }
 

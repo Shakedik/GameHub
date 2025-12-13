@@ -206,55 +206,34 @@
 
 
 
-<!-- מודאל פרופיל (אם כבר יצרת אותו, הוא יכול להישאר כאן) -->
-<div id="profileModal" class="modal hidden">
-    <div class="modal-content">
-
-        <!-- לוגו -->
-        <img src="../img/imagelogo.png" class="profile-logo" alt="logo">
-
-        <h2 class="modal-title">הפרופיל שלי</h2>
-
-        <div class="profile-row"><strong>שם משתמש:</strong> <span id="p_username"></span></div>
-        <div class="profile-row"><strong>תאריך הצטרפות:</strong> <span id="p_created"></span></div>
-        <div class="profile-row"><strong>מספר כניסות:</strong> <span id="p_visits"></span></div>
-        <div class="profile-row"><strong>משחקים ששיחקתי:</strong> <span id="p_gamesPlayed"></span></div>
-        <div class="profile-row"><strong>זמן משחק כולל:</strong> <span id="p_totalPlayTime"></span></div>
-
-        <h3 class="achieve-title">הישגים</h3>
-        <ul id="p_achievements"></ul>
-
-        <span id="closeModal" class="close">&times;</span>
-    </div>
-</div>
+<!-- מודאל פרופיל  -->
 <div id="profileModal" class="profile-modal-overlay hidden">
     <div class="profile-card-glass">
         <button id="closeProfileBtn" class="close-red-btn">✖</button>
 
         <div class="profile-header">
-            <img src="../images/imagelogo.png" alt="Logo" class="profile-logo-img">
+            <img src="../img/imagelogo.png" alt="Logo" class="profile-logo-img">
             <h2>הפרופיל שלי</h2>
         </div>
 
         <div class="profile-details">
-            <div class="p-row"><strong>שם משתמש:</strong> <span id="p_user"></span></div>
-            <div class="p-row"><strong>תאריך הצטרפות:</strong> <span id="p_date"></span></div>
-            <div class="p-row"><strong>מספר כניסות:</strong> <span id="p_logins"></span></div>
-            <div class="p-row"><strong>משחקים ששיחקתי:</strong> <span id="p_games"></span></div>
-            <div class="p-row"><strong>זמן משחק כולל:</strong> <span id="p_time"></span></div>
+            <div class="p-row"><strong>שם משתמש:</strong> <span id="p_user">--</span></div>
+            <div class="p-row"><strong>תאריך הצטרפות:</strong> <span id="p_date">--</span></div>
+            <div class="p-row"><strong>מספר כניסות:</strong> <span id="p_logins">0</span></div>
+            <div class="p-row"><strong>משחקים ששיחקתי:</strong> <span id="p_games">0</span></div>
+            <div class="p-row"><strong>זמן משחק כולל:</strong> <span id="p_time">0 דק'</span></div>
             <hr class="divider">
-            <div class="p-row highlight"><strong>מטבעות:</strong> 💰 <span id="p_coins"></span></div>
-            <div class="p-row highlight"><strong>ניקוד דירוג:</strong> 🏆 <span id="p_score"></span></div>
+            <div class="p-row highlight"><strong>מטבעות:</strong> 💰 <span id="p_coins">0</span></div>
+            <div class="p-row highlight"><strong>ניקוד דירוג:</strong> 🏆 <span id="p_score">0</span></div>
         </div>
 
         <div class="profile-footer">
-            <a href="#" class="achievements-link">הישגים</a>
-            <p class="no-achievements">• אין הישגים עדיין</p>
+            <a href="leaderboard.html" class="achievements-link">לצפייה בטבלת המובילים</a>
         </div>
     </div>
 </div>
-<script src="../js/users.js"></script>
 
+<script src="../js/users.js"></script>
 <script src="../js/profile-modal.js"></script>
 
 <script>
@@ -262,23 +241,19 @@ function openGame(num) {
     if (num === 1) window.location.href = "memory.html";
     if (num === 2) window.location.href = "trivia.html";
 }
-</script>
 
-<script>
-// קוד קטגוריות – דואג שהתפריט יעבוד
+// קוד קטגוריות
 document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("categoriesBtn");
     const menu = document.getElementById("categoriesMenu");
 
     if (!btn || !menu) return;
 
-    // פתיחה/סגירה של התפריט
     btn.addEventListener("click", (event) => {
         event.stopPropagation();
         menu.classList.toggle("hidden");
     });
 
-    // סגירה בלחיצה מחוץ
     document.addEventListener("click", (event) => {
         if (!menu.contains(event.target) && !btn.contains(event.target)) {
             menu.classList.add("hidden");

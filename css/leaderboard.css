@@ -1,70 +1,161 @@
 /* css/leaderboard.css */
+:root {
+    --primary-bg: #0b1a3a;
+    --card-bg: rgba(30, 58, 110, 0.6);
+    --highlight: #00d9ff;
+    --gold: #ffd700;
+    --silver: #c0c0c0;
+    --bronze: #cd7f32;
+    --text-main: #ffffff;
+}
 
 body.leaderboard-page {
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    color: white;
-    text-align: center;
-    font-family: Arial, sans-serif;
     margin: 0;
+    font-family: 'Rubik', sans-serif;
+    background-color: var(--primary-bg);
+    background-image: url('../img/imageback.jpg'); /* אם יש לך תמונת רקע, אם לא - הצבע מספיק */
+    background-size: cover;
+    background-attachment: fixed;
+    color: var(--text-main);
     min-height: 100vh;
+    direction: rtl;
 }
 
+/* כותרת */
+.lb-title {
+    text-align: center;
+    font-size: 48px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    color: var(--highlight);
+    text-shadow: 0 0 15px rgba(0, 217, 255, 0.5);
+}
+
+/* המיכל הראשי - אפקט זכוכית */
 .lb-container {
     max-width: 800px;
-    margin: 50px auto;
-    background: white;
-    color: #333;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    margin: 0 auto 50px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.1); /* שקיפות */
+    backdrop-filter: blur(15px); /* טשטוש הרקע */
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
 }
 
-.lb-header-title {
-    background: #ffd700;
-    padding: 20px;
-    font-size: 28px;
-    font-weight: bold;
-    color: #333;
-    margin: 0;
-}
-
+/* טבלה */
 table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate; /* מאפשר מרווח בין שורות */
+    border-spacing: 0 10px; /* מרווח אנכי בין שורות */
 }
 
-th, td {
-    padding: 15px;
-    border-bottom: 1px solid #eee;
-    text-align: center;
+thead th {
+    color: #aab8c2;
+    font-size: 14px;
+    padding: 10px 20px;
+    text-align: right;
+    font-weight: normal;
 }
 
-th {
-    background: #f4f4f4;
-    color: #555;
+/* שורות השחקנים - כרטיסים */
+tbody tr {
+    background: var(--card-bg);
+    transition: transform 0.2s, background 0.2s;
+}
+
+tbody tr td {
+    padding: 15px 20px;
+    border: none;
+}
+
+/* פינות עגולות לשורה */
+tbody tr td:first-child { border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
+tbody tr td:last-child { border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
+
+/* אפקט ריחוף */
+tbody tr:hover {
+    transform: scale(1.02);
+    background: rgba(45, 85, 160, 0.8);
+    cursor: default;
+}
+
+/* --- עיצוב העמודות --- */
+
+/* דירוג */
+.rank-num {
+    font-weight: bold;
+    font-size: 18px;
+    color: #8b9bb4;
+}
+
+/* שחקן + אווטר */
+.player-cell {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.username {
+    font-size: 18px;
     font-weight: bold;
 }
 
-/* עיצוב למקום הראשון */
-tr:first-child td {
+/* ניקוד */
+.score-num {
+    color: #ffd700;
     font-weight: bold;
-    color: #d35400;
-    font-size: 1.1em;
-    background: #fff8e1;
+    font-size: 18px;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
 }
 
+/* --- מקומות ראשונים --- */
+.rank-1 { background: rgba(255, 215, 0, 0.15) !important; border: 1px solid rgba(255, 215, 0, 0.3); }
+.rank-1 .rank-num { color: var(--gold); font-size: 24px; }
+
+.rank-2 { background: rgba(192, 192, 192, 0.15) !important; border: 1px solid rgba(192, 192, 192, 0.3); }
+.rank-2 .rank-num { color: var(--silver); font-size: 22px; }
+
+.rank-3 { background: rgba(205, 127, 50, 0.15) !important; border: 1px solid rgba(205, 127, 50, 0.3); }
+.rank-3 .rank-num { color: var(--bronze); font-size: 22px; }
+
+/* המשתמש הנוכחי */
+.current-user-row {
+    background: rgba(0, 217, 255, 0.2) !important;
+    border: 1px solid #00d9ff;
+    box-shadow: 0 0 15px rgba(0, 217, 255, 0.2);
+}
+
+/* כפתור חזרה */
 .back-btn {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 25px;
-    background: rgba(255,255,255,0.2);
+    display: block;
+    width: fit-content;
+    margin: 0 auto 30px;
+    padding: 12px 30px;
+    background: linear-gradient(45deg, #ff0055, #ff4444);
     color: white;
     text-decoration: none;
-    border-radius: 20px;
-    font-size: 18px;
-    transition: 0.3s;
+    border-radius: 50px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4);
+    transition: transform 0.2s;
 }
 
 .back-btn:hover {
-    background: rgba(255,255,255,0.4);
+    transform: scale(1.05);
 }
