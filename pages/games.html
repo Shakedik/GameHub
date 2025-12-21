@@ -11,8 +11,10 @@
 <body>
 
 <header class="main-header">
-    <div class="logo">GameHub</div>
-
+<div class="logo">
+    <img src="../img/imagelogo.png" alt="Logo" class="header-logo-img">
+    <span>GameHub</span>
+</div>
     <nav class="nav-menu">
         <a href="#">משחקים מובילים</a>
         <a href="#">משחקים אהובים</a>
@@ -211,27 +213,46 @@
 <!-- מודאל פרופיל  -->
 <div id="profileModal" class="profile-modal-overlay hidden">
     <div class="profile-card-glass">
-        <button id="closeProfileBtn" class="close-red-btn">✖</button>
+        <button id="closeProfileBtn" class="close-clean-btn">✕</button>
 
         <div class="profile-header">
-            <img src="../img/imagelogo.png" alt="Logo" class="profile-logo-img">
-            <h2>הפרופיל שלי</h2>
+            <div class="profile-avatar-container">
+                <img src="../img/imagelogo.png" alt="Avatar" class="profile-avatar-img">
+            </div>
+            <h2 id="p_user">--</h2>
+            <span class="user-badge">שחקן מתחיל</span>
         </div>
 
-        <div class="profile-details">
-            <div class="p-row"><strong>שם משתמש:</strong> <span id="p_user">--</span></div>
-            <div class="p-row"><strong>תאריך הצטרפות:</strong> <span id="p_date">--</span></div>
-            <div class="p-row"><strong>מספר כניסות:</strong> <span id="p_logins">0</span></div>
-            <div class="p-row"><strong>משחקים ששיחקתי:</strong> <span id="p_games">0</span></div>
-            <div class="p-row"><strong>זמן משחק כולל:</strong> <span id="p_time">0 דק'</span></div>
-            <hr class="divider">
-            <div class="p-row highlight"><strong>מטבעות:</strong> 💰 <span id="p_coins">0</span></div>
-            <div class="p-row highlight"><strong>ניקוד דירוג:</strong> 🏆 <span id="p_score">0</span></div>
+        <div class="stats-grid">
+            <div class="stat-box">
+                <span class="stat-value" id="p_games">0</span>
+                <span class="stat-label">משחקים</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-value" id="p_wins">0</span> <span class="stat-label">ניצחונות</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-value" id="p_logins">0</span>
+                <span class="stat-label">ביקורים</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-value" id="p_date">--</span>
+                <span class="stat-label">הצטרפות</span>
+            </div>
         </div>
 
-        <div class="profile-footer">
-            <a href="leaderboard.html" class="achievements-link">לצפייה בטבלת המובילים</a>
+        <div class="highlight-row">
+            <div class="highlight-item">
+                <div class="gold-text" id="p_coins">0</div>
+                <div class="stat-label">מטבעות</div>
+            </div>
+            <div class="highlight-item">
+                <div class="score-text" id="p_score">0</div>
+                <div class="stat-label">ניקוד</div>
+            </div>
         </div>
+
+        <a href="leaderboard.html" class="action-btn">🏆 לטבלת המובילים</a>
     </div>
 </div>
 

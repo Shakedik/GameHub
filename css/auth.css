@@ -1,171 +1,154 @@
+/* css/auth.css */
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;500;700&display=swap');
+
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Heebo', sans-serif;
     direction: rtl;
-    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    background: linear-gradient(135deg, #1a2980, #26d0ce);
+
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
-/* כפתור חזרה */
-.back-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: #ffffff33;
-    padding: 10px 18px;
-    border-radius: 10px;
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    backdrop-filter: blur(4px);
-    transition: 0.2s;
-}
-
-.back-btn:hover {
-    background: #ffffff55;
-    transform: translateX(-4px);
-}
-
-/* קופסת התחברות/הרשמה */
+/* קופסת הטופס */
 .auth-container {
-    width: 380px;
-    background: #ffffffdd;
-    padding: 35px;
-    border-radius: 20px;
+    width: 360px;
+    padding: 40px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.03); /* שקוף מאוד */
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     text-align: center;
-    box-shadow: 0 8px 20px #0003;
+    color: white;
     animation: fadeIn 0.8s ease-out;
+    position: relative; 
+    z-index: 10; /* כדי שהטופס יהיה מעל הקונפטי */
 }
 
-/* לוגו */
-.auth-logo {
-    width: 90px;
-    margin-bottom: 10px;
-}
-
-/* כותרות */
 .auth-title {
     font-size: 32px;
-    color: #0f172a;
-    margin-bottom: 5px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    background: linear-gradient(to right, #fff, #a5b4fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .auth-subtitle {
-    font-size: 16px;
-    color: #475569;
-    margin-bottom: 25px;
+    color: #94a3b8;
+    margin-bottom: 30px;
 }
 
-/* שדות טופס */
+/* שדות */
 .auth-form input {
-    width: 95%;
-    padding: 12px;
+    width: 100%;
+    padding: 14px 16px;
     margin-bottom: 15px;
-    border-radius: 10px;
-    border: 1px solid #cbd5e1;
-    background: #f1f5f9;
-    font-size: 16px;
+    border-radius: 12px;
+    border: 1px solid rgb(255 255 255 / 45%);
+    background: rgba(0, 0, 0, 0.2);
+    color: #ffffff;  font-size: 16px;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: #0018ff;
+    background: #0018ff1c;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
 
 /* כפתור */
 .auth-btn {
     width: 100%;
     padding: 14px;
-    background: #2563eb;
+    background: linear-gradient(135deg, #4f46e570, #102096);
     border: none;
     color: white;
     font-size: 18px;
-    border-radius: 10px;
+    font-weight: bold;
+    border-radius: 12px;
     cursor: pointer;
     transition: 0.3s;
+    margin-top: 10px;
 }
 
 .auth-btn:hover {
-    background: #1e40af;
-    transform: scale(1.03);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(124, 58, 237, 0.3);
 }
 
-/* טקסט מעבר */
 .switch-text {
-    margin-top: 20px;
-    font-size: 15px;
+    margin-top: 25px;
+    color: #94a3b8;
+    font-size: 14px;
 }
 
 .switch-text a {
-    color: #2563eb;
-    font-weight: bold;
+    color: #0018ff;
     text-decoration: none;
+    font-weight: bold;
 }
 
-/* אנימציה */
+.back-btn {
+    position: absolute;
+    top: 30px; right: 30px;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.2s;
+    z-index: 20;
+}
+
+.back-btn:hover { color: white; }
+
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* קונפטי בעת הרשמה לאתר */
-/* ------- קונפטי ------- */
-.confetti {
+/* לוגו */
+.auth-logo {
+    width: 80px; 
+    height: auto;
+    margin-bottom: 15px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* --- קונפטי --- */
+.confetti-container {
     position: fixed;
-    top: -10px;
-    width: 10px;
-    height: 10px;
-    opacity: 0.9;
-    border-radius: 2px;
-    animation: fall 2s linear forwards;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     pointer-events: none;
+    z-index: 5; /* מתחת לטופס */
+    overflow: hidden;
+}
+
+/* שים לב: זה השם שה-JS ישתמש בו */
+.confetti-piece {
+    position: absolute;
+    top: -20px;
+    width: 10px; height: 10px;
+    background: #ffd300;
+    animation: fall linear forwards;
 }
 
 @keyframes fall {
-    0% {
-        transform: translateY(0) rotate(0deg);
-    }
-    100% {
-        transform: translateY(110vh) rotate(720deg);
-    }
+    0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
 }
 
-/* התאמה למובייל - התחברות והרשמה */
-@media (max-width: 600px) {
-    .auth-container {
-        width: 90%;       /* רוחב באחוזים במקום פיקסלים */
-        max-width: 350px; /* גבול עליון */
-        padding: 25px 15px;
-        margin: 0 auto;   /* מירכוז */
-    }
-
-    .auth-title {
-        font-size: 24px;
-    }
-
-    .auth-subtitle {
-        font-size: 14px;
-        margin-bottom: 20px;
-    }
-
-    .back-btn {
-        top: 15px;
-        right: 15px;
-        font-size: 14px;
-        padding: 8px 12px;
-    }
-
-    .auth-form input {
-        font-size: 16px; /* גודל פונט קריא */
-        padding: 10px;
-    }
-
-    .auth-btn {
-        padding: 12px;
-        font-size: 18px;
-    }
+/* שינוי צבע הטקסט של ה-Placeholder (המילים "שם משתמש" ו"סיסמה") */
+.auth-form input::placeholder {
+    color: rgba(255, 255, 255, 0.7); /* לבן עם קצת שקיפות כדי שייראה אלגנטי */
+    opacity: 1; /* מוודא שדפדפנים כמו פיירפוקס לא יטשטשו את זה */
 }

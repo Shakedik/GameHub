@@ -2,12 +2,22 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     direction: rtl;
-    background: linear-gradient(135deg, #ab49e8, #06b6d4);
-    height: 100vh;
-    overflow: hidden;
+
+    /* צבעי הרקע */
+    background: linear-gradient(135deg, #1a2980, #26d0ce);
+
+
+    /* --- התיקון לבעיית השבירה --- */
+    min-height: 100vh;            /* 1. מכריח את הרקע לתפוס 100% מגובה המסך תמיד */
+    background-repeat: no-repeat; /* 2. אוסר על הרקע לשכפל את עצמו */
+    background-attachment: fixed; /* 3. 'מדביק' את הרקע למסך כדי שלא יזוז בגלילה */
+    background-size: cover;       /* 4. מותח את הרקע שיכסה כל פינה */
+
+    /* מרכוז התוכן */
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-x: hidden; /* מונע גלילה לצדדים בלבד */
 }
 
 /* אייקונים מרחפים */

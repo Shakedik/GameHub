@@ -1,234 +1,192 @@
-/* רקע מטושטש - אפקט מים */
-.modal {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    backdrop-filter: blur(10px);  /* טשטוש חזק יותר - כמו מים */
-    background: rgba(255, 255, 255, 0.20); /* שקיפות רכה */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 300;
-}
-
-/* חלון המודאל */
-.modal-content {
-    background: rgba(255, 255, 255, 0.55); /* שקיפות רכה */
-    backdrop-filter: blur(25px); /* אפקט זכוכית */
-    padding: 40px;
-    width: 420px;
-    border-radius: 26px;
-    color: #0d0d0d;
-    text-align: center;
-    animation: popIn 0.35s ease;
-    position: relative;
-
-    /* זוהר תכלת עדין סביב החלון */
-    box-shadow: 
-        0 0 25px rgba(0, 180, 255, 0.45),
-        0 8px 20px rgba(0,0,0,0.22);
-    
-    border: 1px solid rgba(255, 255, 255, 0.28); /* קו לבן עדין */
-}
-
-/* לוגו עם זוהר תכלת */
-.profile-logo {
-    width: 90px;
-    margin-bottom: 10px;
-    filter: drop-shadow(0 0 25px rgba(21, 76, 143, 0.8));
-
-}
-
-/* כותרת */
-.modal-title {
-    font-size: 28px;
-    font-weight: 900;
-    color: #005fcc;
-    margin-bottom: 20px;
-}
-
-/* שורות מידע */
-.profile-row {
-    font-size: 18px;
-    margin: 10px 0;
-    text-align: right;
-    direction: rtl;
-}
-
-/* כותרת הישגים */
-.achieve-title {
-    margin-top: 25px;
-    font-size: 22px;
-    font-weight: bold;
-    color: #0077ff;
-}
-
-/* רשימת הישגים */
-#p_achievements {
-    text-align: right;
-    padding-right: 20px;
-}
-
-/* כפתור סגירה */
-.close {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    font-size: 22px;
-    cursor: pointer;
-    width: 36px;
-    height: 36px;
-    background: rgba(255,255,255,0.7);
-    color: #333;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.25s;
-    border: 1px solid rgba(0,0,0,0.15);
-}
-
-.close:hover {
-    background: #ff5c5c;
-    color: white;
-}
-
-/* אנימציית כניסה */
-@keyframes popIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-.hidden {
-    display: none;
-}
-
 /* css/profiles.css */
+
+/* ייבוא פונט מודרני */
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;500;800&display=swap');
+
+/* משתנים לעיצוב */
+:root {
+    --glass-bg: rgba(18, 24, 43, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --neon-blue: #00f2ff;
+    --neon-purple: #bd00ff;
+    --text-primary: #ffffff;
+    --text-secondary: #a0aec0;
+}
 
 /* רקע כהה לכל המסך */
 .profile-modal-overlay {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.4); /* כהה מעט */
-    backdrop-filter: blur(5px); /* טשטוש הרקע שמאחורה */
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 2000;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-/* כשהמודאל פתוח */
 .profile-modal-overlay.open {
     opacity: 1;
     pointer-events: all;
 }
 
-/* הכרטיס עצמו - Glassmorphism */
+/* כרטיס השחקן עצמו */
 .profile-card-glass {
-    width: 380px;
-    padding: 30px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.85); /* לבן חצי שקוף */
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    width: 400px;
+    padding: 0; /* איפוס ריפוד פנימי */
+    border-radius: 24px;
+    background: var(--glass-bg);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 
+                0 0 30px rgba(0, 242, 255, 0.1); /* זוהר כחול עדין */
+    border: 1px solid var(--glass-border);
     text-align: center;
     position: relative;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Heebo', sans-serif;
     direction: rtl;
-    color: #333;
-    animation: slideUp 0.4s ease-out;
+    color: var(--text-primary);
+    overflow: hidden;
+    animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* כפתור סגירה אדום */
-.close-red-btn {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    background: #ff4d4d;
-    color: white;
-    border: none;
-    width: 28px;
-    height: 28px;
+/* רקע עליון (Header) של הכרטיס */
+.profile-header {
+    background: linear-gradient(135deg, #1a2980, #26d0ce);
+    padding: 30px 20px;
+    position: relative;
+}
+
+.profile-avatar-container {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 10px;
+    background: white;
     border-radius: 50%;
-    cursor: pointer;
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    padding: 3px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.profile-avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: contain;     /* 1. מציג את כל התמונה בלי לחתוך */
+    padding: 12px;           /* 2. דוחף את התמונה פנימה (מקטין אותה) */
+    box-sizing: border-box;  /* 3. שומר שהגודל הכולל לא ישתנה */
+    
+    background-color: white;
+}
+
+.profile-header h2 {
+    margin: 10px 0 5px;
+    font-size: 26px;
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.user-badge {
+    background: rgba(0,0,0,0.3);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+/* גריד סטטיסטיקות */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding: 25px;
+}
+
+.stat-box {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.05);
     transition: transform 0.2s;
 }
 
-.close-red-btn:hover {
-    transform: scale(1.1);
-    background: #ff3333;
+.stat-box:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.1);
 }
 
-/* כותרת ולוגו */
-.profile-header h2 {
-    color: #007bff; /* כחול */
-    margin-top: 10px;
-    font-size: 24px;
+.stat-value {
+    display: block;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--neon-blue);
+    margin-bottom: 4px;
 }
 
-.profile-logo-img {
-    width: 60px;
-    height: auto;
+.stat-label {
+    font-size: 13px;
+    color: var(--text-secondary);
 }
 
-/* שורות הטקסט */
-.profile-details {
-    margin-top: 20px;
-    text-align: right;
-    font-size: 16px;
-    line-height: 1.8;
-}
-
-.p-row {
+/* שורה מודגשת למטבעות */
+.highlight-row {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
+    justify-content: space-around;
+    padding: 0 25px 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 20px;
 }
 
-.p-row strong {
-    color: #555;
+.highlight-item {
+    text-align: center;
 }
 
-.divider {
-    border: 0;
-    height: 1px;
-    background: #ccc;
-    margin: 10px 0;
+.gold-text { color: #ffd700; font-weight: bold; font-size: 18px; }
+.score-text { color: #bd00ff; font-weight: bold; font-size: 18px; }
+
+/* כפתור סגירה */
+.close-clean-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(0,0,0,0.2);
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.2s;
+    z-index: 10;
 }
 
-.highlight {
-    color: #0056b3;
-    font-weight: bold;
+.close-clean-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
 }
 
-/* חלק תחתון */
-.profile-footer {
-    margin-top: 20px;
-}
-
-.achievements-link {
-    color: #007bff;
+/* כפתור טבלה */
+.action-btn {
+    display: block;
+    margin: 0 25px 25px;
+    padding: 12px;
+    background: linear-gradient(90deg, var(--neon-purple), #ff0080);
+    color: white;
     text-decoration: none;
+    border-radius: 12px;
     font-weight: bold;
+    box-shadow: 0 5px 15px rgba(189, 0, 255, 0.4);
+    transition: 0.3s;
 }
 
-.no-achievements {
-    font-size: 12px;
-    color: #777;
-    margin-top: 5px;
+.action-btn:hover {
+    filter: brightness(1.2);
+    transform: scale(1.02);
 }
 
 @keyframes slideUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from { transform: translateY(50px) scale(0.9); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
 }

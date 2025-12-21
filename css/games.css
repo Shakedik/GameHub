@@ -2,13 +2,16 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     direction: rtl;
-    background: linear-gradient(#000964, rgba(0, 180, 255, 0.45));
+    background: linear-gradient(135deg, #1a2980, #26d0ce);
     min-height: 100vh;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;    min-height: 100vh;
 }
 
 /* HEADER */
 .main-header {
-    background: #1b258b;
+    background: #00ccca4d;
     padding: 15px 30px;
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;
@@ -41,7 +44,7 @@ body {
 }
 
 .nav-menu a:hover {
-    background: #0b74da;
+    background: #00ccca69;
 }
 
 /* אייקונים בצד שמאל */
@@ -70,7 +73,7 @@ body {
 }
 
 .cat-btn {
-    background: #0b74da;
+    background: #00ccca4d;
     color: white;
     border: none;
     padding: 10px 22px;
@@ -83,7 +86,7 @@ body {
 }
 
 .cat-btn:hover {
-    background: rgba(21, 76, 143, 0.8);
+    background: #00ccca69;
 }
 
 /* תפריט קטגוריות */
@@ -267,4 +270,32 @@ body {
     .games-grid {
         grid-template-columns: repeat(3, 1fr);
     }
+}
+
+/* עיצוב הלוגו בכותרת */
+.logo {
+    font-size: 28px;
+    font-weight: 900;
+    /* הגדרות חדשות ליישור: */
+    display: flex;
+    align-items: center; /* מיישר את הלוגו והטקסט לאמצע הגובה */
+    gap: 12px;           /* רווח בין הלוגו לטקסט */
+    
+    /* הגרדיאנט שהיה לך קודם לטקסט */
+    background: linear-gradient(to right, #f9fcfe, #00f2ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
+}
+
+/* הגדרת גודל לתמונה כדי שלא תהיה ענקית */
+.header-logo-img {
+    height: 45px;       /* גובה שמתאים לכותרת */
+    width: auto;        /* שומר על פרופורציות */
+    border-radius: 50%; /* אופציונלי: הופך את הלוגו לעגול */
+    
+    /* ביטול הגרדיאנט של הטקסט על התמונה עצמה */
+    -webkit-text-fill-color: initial; 
+    background: none;
+    box-shadow: 0 0 10px rgba(255,255,255,0.2); /* זוהר קטן */
 }
