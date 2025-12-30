@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GameHub - תפוס את הקובייה</title>
+
+  <!-- העיצוב הרגיל של האתר -->
+  <link rel="stylesheet" href="../css/games.css">
+  <link rel="stylesheet" href="../css/profiles.css">
+
+  <!-- העיצוב של המשחק (הקובץ שאת שמה למטה) -->
+  <link rel="stylesheet" href="../css/catch-cube.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header class="main-header">
+  <div class="logo">
+    <img src="../img/imagelogo.png" alt="Logo" class="header-logo-img">
+    <span>GameHub</span>
+  </div>
+
+  <nav class="nav-menu">
+    <a href="games.html">כל המשחקים</a>
+    <a href="leaderboard.html">טבלת המובילים</a>
+    <a href="levels.html">שלבים</a>
+  </nav>
+
+  <div class="icons">
+    <button id="profileBtn" class="icon-btn" title="פרופיל אישי">👤</button>
+    <button id="logoutBtn" class="icon-btn logout-style" title="התנתקות">🏃</button>
+  </div>
+</header>
+
+<h2 class="section-title">תפוס את הקובייה</h2>
+
+<!-- כפתור יציאה קטן כמו שהיה במשחק -->
+<a href="games.html" class="exit-btn">✖ יציאה</a>
+
+<!-- מסך פתיחה -->
+<div id="startScreen" class="start-overlay">
+  <div class="start-content">
+    <div class="game-logo">🎯</div>
+    <h1 class="game-title">תפוס את הקובייה</h1>
+
+    <p class="game-desc">
+      הקובייה קופצת למיקום חדש – לחצי עליה כדי לצבור נקודות.<br>
+      כל שלב נמשך <b>15 שניות</b>. שלבים: <b>1 קל</b> → <b>2 בינוני</b> → <b>3 קשה</b>.
+    </p>
+
+    <div class="last-info" aria-live="polite">
+      <div class="last-row">
+        <span class="label">פעם אחרונה:</span>
+        <span id="lastPlayedText" class="value">—</span>
+      </div>
+      <div class="last-row">
+        <span class="label">ניקוד אחרון:</span>
+        <span id="lastScoreText" class="value">—</span>
+      </div>
+      <div class="last-row">
+        <span class="label">שיא שלך:</span>
+        <span id="bestText" class="value">0</span>
+      </div>
+      <div class="last-row">
+        <span class="label">שלב אחרון:</span>
+        <span id="lastStageText" class="value">—</span>
+      </div>
+    </div>
+
+    <div class="difficulty-row">
+      <button class="diff-btn" data-stage="1">שלב 1 (קל)</button>
+      <button class="diff-btn" data-stage="2">שלב 2 (בינוני)</button>
+      <button class="diff-btn" data-stage="3">שלב 3 (קשה)</button>
+    </div>
+
+    <button id="realStartBtn" class="big-start-btn">התחל שלב 🚀</button>
+  </div>
+</div>
+
+<!-- מסך תוצאות -->
+<div id="resultScreen" class="start-overlay" style="display:none;">
+  <div class="start-content">
+    <div class="game-logo">🏁</div>
+    <h2 class="game-title">סיימת שלב!</h2>
+
+    <div class="result-box">
+      <div class="result-score">
+        ניקוד: <span id="resultScore">0</span>
+      </div>
+
+      <div class="stars" aria-label="כוכבים">
+        <span class="star" id="star1">★</span>
+        <span class="star" id="star2">★</span>
+        <span class="star" id="star3">★</span>
+      </div>
+
+      <div id="burstLayer" class="burst-layer" aria-hidden="true"></div>
+
+      <div class="result-meta">
+        שלב: <span id="resultStage">1</span> •
+        רמה: <span id="resultDiff">קל</span> •
+        קומבו מקס: <span id="resultMaxCombo">x1</span> •
+        שיא: <span id="resultBest">0</span>
+      </div>
+    </div>
+
+    <div class="result-actions">
+      <button id="playAgainBtn" class="btn primary">שחק שוב</button>
+      <button id="nextLevelBtn" class="btn">עבור לשלב הבא</button>
+    </div>
+  </div>
+</div>
+
+<!-- המשחק -->
+<div class="game-container blur-bg">
+
+  <div class="top-bar">
+    <div class="stat">שלב: <span id="stageLabel">1</span></div>
+    <div class="stat">ניקוד: <span id="score">0</span></div>
+    <div class="stat">שיא: <span id="best">0</span></div>
+    <div class="stat">קומבו: <span id="comboLabel">x1</span></div>
+    <div class="stat">זמן: <span id="timeLeft">15</span>s</div>
+  </div>
+
+  <div id="gameArea" class="game-area" aria-label="אזור משחק">
+    <div id="target" class="target" role="button" aria-label="מטרה ללחיצה"></div>
+  </div>
+
+  <div class="bottom-bar">
+    <button id="restartBtn" class="btn small">התחל מחדש</button>
+    <div class="current-diff">רמה: <span id="diffLabel">קל</span></div>
+  </div>
+
+</div>
+
+<!-- מודאל פרופיל (כמו ב-games.html) -->
+<div id="profileModal" class="profile-modal-overlay hidden">
+  <div class="profile-card-glass">
+    <button id="closeProfileBtn" class="close-clean-btn">✕</button>
+
+    <div class="profile-header">
+      <div class="profile-avatar-container">
+        <img src="../img/imagelogo.png" alt="Avatar" class="profile-avatar-img">
+      </div>
+      <h2 id="p_user">--</h2>
+      <span class="user-badge">שחקן מתחיל</span>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-box">
+        <span class="stat-value" id="p_games">0</span>
+        <span class="stat-label">משחקים</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-value" id="p_wins">0</span>
+        <span class="stat-label">ניצחונות</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-value" id="p_logins">0</span>
+        <span class="stat-label">ביקורים</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-value" id="p_date">--</span>
+        <span class="stat-label">הצטרפות</span>
+      </div>
+    </div>
+
+    <div class="highlight-row">
+      <div class="highlight-item">
+        <div class="gold-text" id="p_coins">0</div>
+        <div class="stat-label">מטבעות</div>
+      </div>
+      <div class="highlight-item">
+        <div class="score-text" id="p_score">0</div>
+        <div class="stat-label">ניקוד</div>
+      </div>
+    </div>
+
+    <a href="leaderboard.html" class="action-btn">🏆 לטבלת המובילים</a>
+  </div>
+</div>
+
+<script src="../js/users.js"></script>
+<script src="../js/profile-modal.js"></script>
+<script src="../js/catch-cube.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      if (confirm("האם את/ה בטוח/ה שברצונך להתנתק?")) {
+        if (typeof UserStore !== "undefined") UserStore.logout();
+        else window.location.href = "../index.html";
+      }
+    });
+  }
+});
+</script>
+
+</body>
+</html>
