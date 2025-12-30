@@ -60,7 +60,6 @@ if (registerForm) {
         startConfetti();
         
         setTimeout(() => {
-            // *** כאן התיקון: הוספנו את התיקייה pages ***
             window.location.href = "pages/games.html"; 
         }, 2000); 
     });
